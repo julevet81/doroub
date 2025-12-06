@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssistanceItem;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        $items = AssistanceItem::all();
+        return view('projects.create', compact('items'));
     }
 
     /**

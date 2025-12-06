@@ -22,4 +22,13 @@ class Project extends Model
     ];
 
     
+    public function projectAssistances()
+    {
+        return $this->hasMany(ProjectAssistance::class);
+    }
+
+    public function projectVolunteers()
+    {
+        return $this->hasMany(ProjectVolunteer::class);
+    }
 }

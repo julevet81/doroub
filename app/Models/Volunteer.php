@@ -28,5 +28,9 @@ class Volunteer extends Model
         'notes',
     ];
 
+    public function projects()
+    {
+        return $this->belongsTo(Project::class);
+    }
     
 }

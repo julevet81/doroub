@@ -52,39 +52,6 @@
 										</select>
 									</div>
 								</div>
-								<hr>
-
-								<h5>الأصناف الداخلة</h5>
-								<table class="table" id="itemsTable">
-									<thead>
-										<tr>
-											<th>الصنف</th>
-											<th>الكمية</th>
-											<th>إجراءات</th>
-										</tr>
-									</thead>
-									<tbody>
-
-										<tr>
-											<td>
-												<select name="items[0][item_id]" class="form-control">
-													@foreach($items as $item)
-														<option value="{{ $item->id }}">{{ $item->name }}</option>
-													@endforeach
-												</select>
-											</td>
-
-											<td>
-												<input type="number" name="items[0][quantity]" class="form-control" min="1" required>
-											</td>
-
-											<td>
-												<button type="button" class="btn btn-danger removeRow">حذف</button>
-											</td>
-										</tr>
-
-									</tbody>
-								</table>
 								<div class="row">
 									<div class="col">
 										<label for="budget" class="control-label">السعر</label>
@@ -104,43 +71,4 @@
 	<!-- main-content closed -->
 @endsection
 @section('js')
-	<script>
-		let rowIndex = 1;
-
-		document.getElementById('addRow').addEventListener('click', function () {
-
-			let tableBody = document.querySelector('#itemsTable tbody');
-
-			let newRow = `
-				<tr>
-					<td>
-						<select name="items[${rowIndex}][item_id]" class="form-control">
-							@foreach($items as $item)
-								<option value="{{ $item->id }}">{{ $item->name }}</option>
-							@endforeach
-						</select>
-					</td>
-
-					<td>
-						<input type="number" name="items[${rowIndex}][quantity]" class="form-control" min="1" required>
-					</td>
-
-					<td>
-						<button type="button" class="btn btn-danger removeRow">حذف</button>
-					</td>
-				</tr>
-			`;
-
-			tableBody.insertAdjacentHTML('beforeend', newRow);
-			rowIndex++;
-		});
-
-		// حذف الصف
-		document.addEventListener('click', function (e) {
-			if (e.target && e.target.classList.contains('removeRow')) {
-				e.target.closest('tr').remove();
-			}
-		});
-	</script>
-
 @endsection

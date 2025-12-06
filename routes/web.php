@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AssistanceCategoryController;
+use App\Http\Controllers\DonorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TestController;
@@ -27,6 +29,28 @@ Route::middleware('auth')->group(function () {
     ######################## Volunteers Routes #########################
 
     Route::resource('volunteers', VolunteerController::class);
+
+    ######################## Assistance Categories Routes #########################
+    Route::resource('assistance_categories', AssistanceCategoryController::class);
+
+    ######################## Assistance Items Routes #########################
+    Route::resource('assistance_items', \App\Http\Controllers\AssistanceItemController::class);
+
+    ##################### Donations Routes #########################
+    Route::resource('donors', DonorController::class);
+
+    ##################### Project Assistances Routes #########################
+    Route::resource('project_assistances', \App\Http\Controllers\ProjectAssistanceController::class);
+
+    ##################### Inventory Transactions Routes #########################
+    Route::resource('inventory_transactions', \App\Http\Controllers\InventoryTransactionController::class);
+
+    ##################### Beneficiary Categories Routes #########################
+    Route::resource('beneficiary_categories', \App\Http\Controllers\BeneficiaryCategoryController::class);
+
+    
+    
+
 
     
 
