@@ -12,7 +12,8 @@ class FinancialTransactionController extends Controller
      */
     public function index()
     {
-        //
+        $financialTransactions = FinancialTransaction::all();
+        return view('financial_transactions.index', compact('financialTransactions'));
     }
 
     /**
@@ -20,7 +21,7 @@ class FinancialTransactionController extends Controller
      */
     public function create()
     {
-        //
+        return view('financial_transactions.create');
     }
 
     /**
@@ -28,7 +29,20 @@ class FinancialTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'amount' => 'required|numeric',
+            'transaction_type' => 'required|string|max:255',
+            'donor_id' => 'nullable|exists:donors,id',
+            'orientation' => 'nullable|in:project,family',
+            'payment_method' => 'nullable|in:cash,bank_transfer,credit_card,other',
+            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'previous_balance' => 'nullable|numeric',
+            'new_balance' => 'nullable|numeric',
+            'description' => 'nullable|string',
+            'transaction_date' => 'required|date',
+        ]);
+        FinancialTransaction::create($request->all());
+        return redirect()->route('financial_transactions.index')->with('success', 'تم إنشاء المعاملة المالية بنجاح.');
     }
 
     /**
@@ -36,7 +50,7 @@ class FinancialTransactionController extends Controller
      */
     public function show(FinancialTransaction $financialTransaction)
     {
-        //
+        return view('financial_transactions.show', compact('financialTransaction'));
     }
 
     /**
@@ -44,7 +58,7 @@ class FinancialTransactionController extends Controller
      */
     public function edit(FinancialTransaction $financialTransaction)
     {
-        //
+        return view('financial_transactions.edit', compact('financialTransaction'));
     }
 
     /**
@@ -52,7 +66,20 @@ class FinancialTransactionController extends Controller
      */
     public function update(Request $request, FinancialTransaction $financialTransaction)
     {
-        //
+        $request->validate([
+            'amount' => 'required|numeric',
+            'transaction_type' => 'required|string|max:255',
+            'donor_id' => 'nullable|exists:donors,id',
+            'orientation' => 'nullable|in:project,family',
+            'payment_method' => 'nullable|in:cash,bank_transfer,credit_card,other',
+            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'previous_balance' => 'nullable|numeric',
+            'new_balance' => 'nullable|numeric',
+            'description' => 'nullable|string',
+            'transaction_date' => 'required|date',
+        ]);
+        $financialTransaction->update($request->all());
+        return redirect()->route('financial_transactions.index')->with('success', 'تم تحديث المعاملة المالية بنجاح.');
     }
 
     /**
@@ -60,6 +87,7 @@ class FinancialTransactionController extends Controller
      */
     public function destroy(FinancialTransaction $financialTransaction)
     {
-        //
+        $financialTransaction->delete();
+        return redirect()->route('financial_transactions.index')->with('success', 'تم حذف المعاملة المالية بنجاح.');
     }
 }

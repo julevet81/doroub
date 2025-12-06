@@ -1,10 +1,22 @@
 <?php
 
 use App\Http\Controllers\AssistanceCategoryController;
+use App\Http\Controllers\AssistanceItemController;
+use App\Http\Controllers\BeneficiaryCategoryController;
+use App\Http\Controllers\BeneficiaryController;
+use App\Http\Controllers\ChildController;
+use App\Http\Controllers\DemondedItemController;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\DonorController;
+use App\Http\Controllers\FinancialTransactionController;
+use App\Http\Controllers\InventoryTransactionController;
+use App\Http\Controllers\PartnerInfoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectAssistanceController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TransactionItemController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,24 +46,43 @@ Route::middleware('auth')->group(function () {
     Route::resource('assistance_categories', AssistanceCategoryController::class);
 
     ######################## Assistance Items Routes #########################
-    Route::resource('assistance_items', \App\Http\Controllers\AssistanceItemController::class);
+    Route::resource('assistance_items', AssistanceItemController::class);
 
     ##################### Donations Routes #########################
     Route::resource('donors', DonorController::class);
 
     ##################### Project Assistances Routes #########################
-    Route::resource('project_assistances', \App\Http\Controllers\ProjectAssistanceController::class);
+    Route::resource('project_assistances', ProjectAssistanceController::class);
 
     ##################### Inventory Transactions Routes #########################
-    Route::resource('inventory_transactions', \App\Http\Controllers\InventoryTransactionController::class);
+    Route::resource('inventory_transactions', InventoryTransactionController::class);
 
     ##################### Beneficiary Categories Routes #########################
-    Route::resource('beneficiary_categories', \App\Http\Controllers\BeneficiaryCategoryController::class);
+    Route::resource('beneficiary_categories', BeneficiaryCategoryController::class);
 
+    ##################### Beneficiaries Routes #########################
+    Route::resource('beneficiaries', BeneficiaryController::class);
+
+    ##################### Children Routes #########################
+    Route::resource('children', ChildController::class);
+
+    ##################### Financial Transactions Routes #########################
+    Route::resource('financial_transactions', FinancialTransactionController::class);
+
+    ###################### Transaction Items Routes #########################
+    Route::resource('transaction_items', TransactionItemController::class);
+
+    ########################## Partner Infos Routes #########################
+    Route::resource('partner_infos', PartnerInfoController::class);
+
+    ####################### Demonded Items Routes #########################
+    Route::resource('demonded_items', DemondedItemController::class);
     
-    
+    ####################### Devices Routes #########################
+    Route::resource('devices', DeviceController::class);
 
-
+    ####################### Registrations Routes #########################
+    Route::resource('registrations', RegistrationController::class);
     
 
 
