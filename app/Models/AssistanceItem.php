@@ -11,7 +11,6 @@ class AssistanceItem extends Model
 
     protected $fillable = [
         'name',
-        'assistance_category_id',
         'quantity_in_stock',
         'code',
     ];

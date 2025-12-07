@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('loans', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('device_id');
-            $table->unsignedBigInteger('beneficiary_id');
-            $table->boolean('new_beneficiary')->default(false);
-            $table->date('loan_date');
-            $table->text('notes')->nullable();
+            $table->string('name');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('loans');
+        Schema::dropIfExists('districts');
     }
 };

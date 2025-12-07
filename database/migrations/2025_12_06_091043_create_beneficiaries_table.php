@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('social_status', ['maried', 'single', 'divorced', 'widowed'])->default('single');
             $table->enum('gender', ['male', 'female']);
             $table->integer('nbr_in_family');
-            $table->foreignId('partner_id')->constrained()->onDelete('cascade');
+            $table->foreignId('partner_id')->constrained('partner_infos')->onDelete('cascade');
             $table->integer('nbr_studing')->default(0);
             $table->string('job')->nullable();
             $table->boolean('insured')->default(false);

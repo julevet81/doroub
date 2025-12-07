@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class PartnerInfoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $partnerInfos = PartnerInfo::all();

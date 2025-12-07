@@ -2,14 +2,19 @@
 
 use App\Http\Controllers\AssistanceCategoryController;
 use App\Http\Controllers\AssistanceItemController;
+use App\Http\Controllers\BeneficeController;
 use App\Http\Controllers\BeneficiaryCategoryController;
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\ChildController;
+use App\Http\Controllers\DemondController;
 use App\Http\Controllers\DemondedItemController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\FinancialTransactionController;
 use App\Http\Controllers\InventoryTransactionController;
+use App\Http\Controllers\LoanController;
+use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PartnerInfoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectAssistanceController;
@@ -17,6 +22,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransactionItemController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,11 +75,17 @@ Route::middleware('auth')->group(function () {
     ##################### Financial Transactions Routes #########################
     Route::resource('financial_transactions', FinancialTransactionController::class);
 
+    ##################### Benefices Routes #########################
+    Route::resource('benefices', BeneficeController::class);
+
     ###################### Transaction Items Routes #########################
     Route::resource('transaction_items', TransactionItemController::class);
 
     ########################## Partner Infos Routes #########################
     Route::resource('partner_infos', PartnerInfoController::class);
+
+    ########################## Demonds Routes #########################
+    Route::resource('demonds', DemondController::class);
 
     ####################### Demonded Items Routes #########################
     Route::resource('demonded_items', DemondedItemController::class);
@@ -83,8 +95,23 @@ Route::middleware('auth')->group(function () {
 
     ####################### Registrations Routes #########################
     Route::resource('registrations', RegistrationController::class);
-    
 
+    ####################### municipalities Routes #########################
+
+    Route::resource('municipalities', MunicipalityController::class);
+
+    ####################### districts Routes #########################
+
+    Route::resource('districts', DistrictController::class);
+
+    ####################### Users Routes #########################
+    Route::resource('users', UserController::class);
+
+    ######################## Roles Routes #########################
+    //Route::resource('roles', RoleController::class);
+
+    ######################## Loans Routes #########################
+    Route::resource('loans', LoanController::class);
 
 });
 

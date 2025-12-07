@@ -12,7 +12,8 @@ class ProjectAssistanceController extends Controller
      */
     public function index()
     {
-        //
+        $projectAssistances = ProjectAssistance::all();
+        return view('project_assistances.index', compact('projectAssistances'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ProjectAssistanceController extends Controller
      */
     public function create()
     {
-        //
+        return view('project_assistances.create');
     }
 
     /**
@@ -28,7 +29,15 @@ class ProjectAssistanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'project_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'budget' => 'nullable|numeric',
+        ]);
+        ProjectAssistance::create($request->all());
+        return redirect()->route('project_assistances.index')->with('success', 'Project Assistance created successfully.');
     }
 
     /**
@@ -36,7 +45,7 @@ class ProjectAssistanceController extends Controller
      */
     public function show(ProjectAssistance $projectAssistance)
     {
-        //
+        return view('project_assistances.show', compact('projectAssistance'));
     }
 
     /**
@@ -44,7 +53,7 @@ class ProjectAssistanceController extends Controller
      */
     public function edit(ProjectAssistance $projectAssistance)
     {
-        //
+        return view('project_assistances.edit', compact('projectAssistance'));
     }
 
     /**
@@ -52,7 +61,15 @@ class ProjectAssistanceController extends Controller
      */
     public function update(Request $request, ProjectAssistance $projectAssistance)
     {
-        //
+        $request->validate([
+            'project_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'budget' => 'nullable|numeric',
+        ]);
+        $projectAssistance->update($request->all());
+        return redirect()->route('project_assistances.index')->with('success', 'Project Assistance updated successfully.');
     }
 
     /**
@@ -60,6 +77,7 @@ class ProjectAssistanceController extends Controller
      */
     public function destroy(ProjectAssistance $projectAssistance)
     {
-        //
+        $projectAssistance->delete();
+        return redirect()->route('project_assistances.index')->with('success', 'Project Assistance deleted successfully.');
     }
 }

@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class DonorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $donors = Donor::all();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AssistanceItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AssistanceItemController extends Controller
 {
@@ -12,8 +13,8 @@ class AssistanceItemController extends Controller
      */
     public function index()
     {
-        $assistanceItems = AssistanceItem::all();
-        return view('assistance_items.index', compact('assistanceItems'));
+        $assistance_items = AssistanceItem::all();
+        return view('assistance_items.index', compact('assistance_items'));
     }
 
     /**
@@ -31,11 +32,14 @@ class AssistanceItemController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'assistance_category_id' => 'required|exists:assistance_categories,id',
-            'code' => 'required|string|max:255|unique:assistance_items,code',
         ]);
 
-        AssistanceItem::create($request->all());
+        $barcode = Str::upper(Str::random(10));
+
+        AssistanceItem::create([
+            'name' => $request->name,
+            'code' => $barcode
+        ]);
 
         return redirect()->route('assistance_items.index');
     }
@@ -63,8 +67,7 @@ class AssistanceItemController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'assistance_category_id' => 'required|exists:assistance_categories,id',
-            'code' => 'required|string|max:255|unique:assistance_items,code,' . $assistanceItem->id,
+            'quantity_in_stock' => 'required|integer',
         ]);
 
         $assistanceItem->update($request->all());

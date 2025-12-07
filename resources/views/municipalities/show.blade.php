@@ -30,7 +30,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($assistanceItem as $key => $value)
+            @foreach($projectData as $key => $value)
                 <tr>
                     <td>{{ ucfirst(str_replace('_', ' ', $key)) }}</td>
                     <td>{{ $value }}</td>

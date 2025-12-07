@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('assistance_items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('assistance_category_id')->constrained()->onDelete('cascade');
             $table->integer('quantity_in_stock')->default(0);
             $table->string('code')->unique();
             $table->timestamps();
