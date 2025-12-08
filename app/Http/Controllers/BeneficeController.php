@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Benefice;
+use App\Models\Beneficiary;
 use Illuminate\Http\Request;
 
 class BeneficeController extends Controller
@@ -13,7 +14,8 @@ class BeneficeController extends Controller
     public function index()
     {
         $benefices = Benefice::all();
-        return view('benefices.index', compact('benefices'));
+        $beneficiaries = Beneficiary::all();
+        return view('benefices.index', compact('benefices', 'beneficiaries'));
     }
 
     /**
@@ -21,7 +23,9 @@ class BeneficeController extends Controller
      */
     public function create()
     {
-        return view('benefices.create');
+
+        $beneficiaries = Beneficiary::all();
+        return view('benefices.create', compact('beneficiaries'));
     }
 
     /**

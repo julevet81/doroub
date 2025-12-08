@@ -23,6 +23,6 @@ class PartnerInfo extends Model
 
     public function beneficiary()
     {
-        return $this->hasOne(Beneficiary::class, 'partner_id');
+        return $this->hasMany(Beneficiary::class, 'partner_id');
     }
 }

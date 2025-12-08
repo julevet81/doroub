@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donor;
 use App\Models\FinancialTransaction;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class FinancialTransactionController extends Controller
      */
     public function index()
     {
-        $financialTransactions = FinancialTransaction::all();
+        $financialTransactions = FinancialTransaction::where('transaction_type', 'income')->with('donor', 'orientation', 'amount')->get();
         return view('financial_transactions.index', compact('financialTransactions'));
     }
 
@@ -21,7 +22,8 @@ class FinancialTransactionController extends Controller
      */
     public function create()
     {
-        return view('financial_transactions.create');
+        $donors = Donor::all();
+        return view('financial_transactions.create', compact('donors'));
     }
 
     /**
@@ -35,13 +37,14 @@ class FinancialTransactionController extends Controller
             'donor_id' => 'nullable|exists:donors,id',
             'orientation' => 'nullable|in:project,family',
             'payment_method' => 'nullable|in:cash,bank_transfer,credit_card,other',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
-            'previous_balance' => 'nullable|numeric',
-            'new_balance' => 'nullable|numeric',
+            'invoice_id' => 'nullable|exists:invoices,id',
             'description' => 'nullable|string',
             'transaction_date' => 'required|date',
         ]);
-        FinancialTransaction::create($request->all());
+        $expense = FinancialTransaction::create($request->all());
+        $expense->previous_balance = FinancialTransaction::latest()->value('new_balance') ?? 0;
+        $expense->new_balance = $expense->previous_balance + $expense->amount;
+        $expense->save();
         return redirect()->route('financial_transactions.index')->with('success', 'تم إنشاء المعاملة المالية بنجاح.');
     }
 
@@ -72,12 +75,11 @@ class FinancialTransactionController extends Controller
             'donor_id' => 'nullable|exists:donors,id',
             'orientation' => 'nullable|in:project,family',
             'payment_method' => 'nullable|in:cash,bank_transfer,credit_card,other',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
-            'previous_balance' => 'nullable|numeric',
-            'new_balance' => 'nullable|numeric',
+            'invoice_id' => 'nullable|exists:invoices,id',
             'description' => 'nullable|string',
             'transaction_date' => 'required|date',
         ]);
+        $financialTransaction->new_balance = $financialTransaction->previous_balance + $request->amount;
         $financialTransaction->update($request->all());
         return redirect()->route('financial_transactions.index')->with('success', 'تم تحديث المعاملة المالية بنجاح.');
     }

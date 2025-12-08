@@ -1,14 +1,16 @@
 @extends('dashboard.layouts.master')
 @section('title')
-  Edit project
+  تعديل عنصر المساعدة
 @endsection
 @section('css')
 @endsection
 
 @section('content')
 
-  <div class="container">
-      <h2>Edit project</h2>
+  <div class="container" style="font-size: x-large">
+      <br>
+      <h2>تعديل عنصر المساعدة</h2>
+      <br>
       <div>
           {{-- Show Success Message --}}
           @if(session('success'))
@@ -33,20 +35,20 @@
 
           {{-- assistance item Name --}}
           <div class="mb-3">
-              <label for="name" class="form-label">assistance item Name</label>
+              <label for="name" class="form-label">اسم عنصر المساعدة</label>
               <input type="text" name="name" id="name"
                      value="{{ old('name', $assistance_item->name) }}"
-                     class="form-control" required>
+                     class="form-control" style="font-size: large" required>
           </div>
           <div class="mb-3">
-              <label for="quantity_in_stock" class="form-label">Quantity in Stock</label>
+              <label for="quantity_in_stock" class="form-label">الكمية في المخزون</label>
               <input type="number" name="quantity_in_stock" id="quantity_in_stock"
                      value="{{ old('quantity_in_stock', $assistance_item->quantity_in_stock) }}"
                      class="form-control" required>
           </div>
           
           {{-- Submit --}}
-          <button type="submit" class="btn btn-primary">Update project</button>
+          <button type="submit" class="btn btn-primary">تحديث عنصر المساعدة</button>
       </form>
   </div>
 @endsection

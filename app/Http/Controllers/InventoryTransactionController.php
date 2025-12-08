@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssistanceItem;
+use App\Models\Donor;
 use App\Models\InventoryTransaction;
+use App\Models\TransactionItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InventoryTransactionController extends Controller
 {
@@ -12,8 +16,8 @@ class InventoryTransactionController extends Controller
      */
     public function index()
     {
-        $inventoryTransactions = InventoryTransaction::all();
-        return view('inventory_transactions.index', compact('inventoryTransactions'));
+        $inventoryTransactions = InventoryTransaction::where('transaction_type','in')->with('donor', 'orientation')->get();
+        return view('inventory_in.index', compact('inventoryTransactions'));
     }
 
     /**
@@ -21,7 +25,9 @@ class InventoryTransactionController extends Controller
      */
     public function create()
     {
-        return view('inventory_transactions.create');
+        $donors = Donor::all();
+        $assistance_items = AssistanceItem::all();
+        return view('inventory_in.create', compact('donors', 'assistance_items'));
     }
 
     /**
@@ -29,14 +35,31 @@ class InventoryTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'transaction_type' => 'required|string|max:50',
-            'donor_id' => 'nullable|exists:donors,id',
-            'transaction_date' => 'required|date',
-            'notes' => 'nullable|string',
-        ]);
-        InventoryTransaction::create($request->all());
-        return redirect()->route('inventory_transactions.index');
+        DB::transaction(function () use ($request) {
+
+            $transaction = InventoryTransaction::create([
+                'donor_id' => $request->donor_id,
+                'transaction_date' => $request->transaction_date,
+                'orientation' => $request->orientation,
+                'notes' => $request->notes,
+            ]);
+
+            foreach ($request->items as $row) {
+
+                // create detail record
+                TransactionItem::create([
+                    'inventory_transaction_id' => $transaction->id,
+                    'assistance_item_id' => $row['assistance_item_id'],
+                    'quantity' => $row['quantity'],
+                ]);
+
+                // update stock
+                AssistanceItem::where('id', $row['assistance_item_id'])
+                    ->increment('quantity_in_stock', $row['quantity']);
+            }
+        });
+
+        return redirect()->back()->with('success', 'تم حفظ البيانات بنجاح');
     }
 
     /**
@@ -44,7 +67,7 @@ class InventoryTransactionController extends Controller
      */
     public function show(InventoryTransaction $inventoryTransaction)
     {
-        return view('inventory_transactions.show', compact('inventoryTransaction'));
+        return view('inventory_in.show', compact('inventoryTransaction'));
     }
 
     /**
@@ -52,7 +75,7 @@ class InventoryTransactionController extends Controller
      */
     public function edit(InventoryTransaction $inventoryTransaction)
     {
-        return view('inventory_transactions.edit', compact('inventoryTransaction'));
+        return view('inventory_in.edit', compact('inventoryTransaction'));
     }
 
     /**

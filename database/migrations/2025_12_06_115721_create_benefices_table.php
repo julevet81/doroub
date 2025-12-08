@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('benefices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('beneficiary_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['financial', 'material', 'service']);
+            $table->enum('type', ['financial', 'material']);
             $table->timestamps();
         });
     }

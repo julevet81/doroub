@@ -2,19 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
+use App\Models\Municipality;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $registrations = Registration::all();
-        return view('registrations.index', compact('registrations'));
+        $query = Registration::with('beneficiary');
+
+        // filter by district
+        if ($request->district_id) {
+            $query->whereHas('beneficiary', function ($q) use ($request) {
+                $q->where('district_id', $request->district_id);
+            });
+        }
+
+        // filter by municipality
+        if ($request->municipality_id) {
+            $query->whereHas('beneficiary', function ($q) use ($request) {
+                $q->where('municipality_id', $request->municipality_id);
+            });
+        }
+
+        // filter by city
+        if ($request->city) {
+            $query->whereHas('beneficiary', function ($q) use ($request) {
+                $q->where('city', 'LIKE', "%{$request->city}%");
+            });
+        }
+
+        // filter by number in family
+        if ($request->nbr_in_family) {
+            $query->whereHas('beneficiary', function ($q) use ($request) {
+                $q->where('nbr_in_family', $request->nbr_in_family);
+            });
+        }
+
+        // filter by social status
+        if ($request->social_status) {
+            $query->whereHas('beneficiary', function ($q) use ($request) {
+                $q->where('social_status', $request->social_status);
+            });
+        }
+
+        $registrations = $query->latest()->paginate(20);
+
+        // for select options
+        $districts = District::all();
+        $municipalities = Municipality::all();
+
+        return view('registrations.index', compact(
+            'registrations',
+            'districts',
+            'municipalities',
+            'request'
+        ));
     }
+
 
     /**
      * Show the form for creating a new resource.

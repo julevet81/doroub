@@ -11,6 +11,7 @@ use App\Http\Controllers\DemondedItemController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DonorController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FinancialTransactionController;
 use App\Http\Controllers\InventoryTransactionController;
 use App\Http\Controllers\LoanController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectAssistanceController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransactionItemController;
 use App\Http\Controllers\UserController;
@@ -68,12 +70,17 @@ Route::middleware('auth')->group(function () {
 
     ##################### Beneficiaries Routes #########################
     Route::resource('beneficiaries', BeneficiaryController::class);
+    Route::get('/get-municipalities/{district_id}', [BeneficiaryController::class, 'getMunicipalities']);
+
 
     ##################### Children Routes #########################
     Route::resource('children', ChildController::class);
 
     ##################### Financial Transactions Routes #########################
     Route::resource('financial_transactions', FinancialTransactionController::class);
+
+    ##################### Expenses Routes #########################
+    Route::resource('expenses', ExpenseController::class);
 
     ##################### Benefices Routes #########################
     Route::resource('benefices', BeneficeController::class);
@@ -108,10 +115,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
 
     ######################## Roles Routes #########################
-    //Route::resource('roles', RoleController::class);
+    Route::resource('roles', RoleController::class);
 
     ######################## Loans Routes #########################
     Route::resource('loans', LoanController::class);
+
+
 
 });
 

@@ -50,5 +50,24 @@ class Beneficiary extends Model
         return $this->hasMany(Child::class);
     }
 
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
+    }
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
 
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(PartnerInfo::class, 'partner_id');
+    }
+
+    
 }

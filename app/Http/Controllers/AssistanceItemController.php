@@ -34,7 +34,10 @@ class AssistanceItemController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $barcode = Str::upper(Str::random(10));
+        $barcode = random_int(1000000000, 9999999999);
+
+
+
 
         AssistanceItem::create([
             'name' => $request->name,
@@ -47,17 +50,17 @@ class AssistanceItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AssistanceItem $assistanceItem)
+    public function show(AssistanceItem $assistance_item)
     {
-        return view('assistance_items.show', compact('assistanceItem'));
+        return view('assistance_items.show', compact('assistance_item'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AssistanceItem $assistanceItem)
+    public function edit(AssistanceItem $assistance_item)
     {
-        return view('assistance_items.edit', compact('assistanceItem'));
+        return view('assistance_items.edit', compact('assistance_item'));
     }
 
     /**

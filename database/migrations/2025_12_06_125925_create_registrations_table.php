@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('beneficiary_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['accepted', 'in_study', 'rejected']);
+            $table->enum('status', ['accepted', 'pending', 'rejected']);
             $table->text('notes')->nullable();
             $table->timestamps();
         });

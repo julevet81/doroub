@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('financial_transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->nullable()->constrained()->onDelete('set null');
             $table->decimal('amount', 15, 2);
-            $table->string('transaction_type');
+            $table->enum('transaction_type', ['income', 'expense']);
             $table->foreignId('donor_id')->nullable()->constrained()->onDelete('set null');
             $table->enum('orientation', ['project', 'family'])->nullable();
+            $table->enum('out_orientation', ['project', 'sponsored_family', 'services', 'electricity', 'maintenance', 'internet', 'cleaning', 'generals'])->nullable();
             $table->enum('payment_method', ['cash', 'bank_transfer', 'credit_card', 'other'])->nullable();
-            $table->string('attachment')->nullable();
             $table->decimal('previous_balance', 15, 2)->nullable();
             $table->decimal('new_balance', 15, 2)->nullable();
             $table->text('description')->nullable();

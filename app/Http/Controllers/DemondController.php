@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssistanceItem;
 use App\Models\Demond;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DemondController extends Controller
 {
@@ -21,7 +23,9 @@ class DemondController extends Controller
      */
     public function create()
     {
-        return view('demonds.create');
+        $beneficiaries = Demond::all();
+        $assistance_items = AssistanceItem::all();
+        return view('demonds.create', compact('beneficiaries', 'assistance_items'));
     }
 
     /**
@@ -29,22 +33,38 @@ class DemondController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'beneficiary_id' => 'required|exists:beneficiaries,id',
             'demand_date' => 'required|date',
-            'treated_by' => 'nullable|exists:users,id',
-            'description' => 'nullable|string',
+            'attachement' => 'nullable|file|max:2048',
+            'description' => 'nullable|string'
         ]);
-        Demond::create($validatedData);
-        return redirect()->route('demonds.index')->with('success', 'تم إضافة الطلب بنجاح.');
+
+        $file = null;
+
+        if ($request->hasFile('attachement')) {
+            $file = $request->file('attachement')->store('demonds', 'public');
+        }
+
+        Demond::create([
+            'beneficiary_id' => $request->beneficiary_id,
+            'demand_date' => $request->demand_date,
+            'treated_by' => Auth::user()->id, // optional
+            'attachement' => $file,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('demonds.index')->with('success', 'تم إضافة الطلب بنجاح');
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Demond $demond)
     {
-        return view('demonds.show', compact('demond'));
+        $assistance_items = AssistanceItem::all();
+        return view('demonds.show', compact('demond', 'assistance_items'));
     }
 
     /**

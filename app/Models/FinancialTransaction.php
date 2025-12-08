@@ -15,7 +15,6 @@ class FinancialTransaction extends Model
         'donor_id',
         'orientation',
         'payment_method',
-        'attachment',
         'previous_balance',
         'new_balance',
         'description',
@@ -26,5 +25,10 @@ class FinancialTransaction extends Model
     public function donor()
     {
         return $this->belongsTo(Donor::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 }
