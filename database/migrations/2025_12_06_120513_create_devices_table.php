@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('serial_number')->unique();
             $table->integer('usage_count')->default(0);
-            $table->enum('status', ['loaned', 'returned']);
+            $table->boolean('status')->default(false);
+            $table->boolean('is_destructed')->default(false);
             $table->text('destruction_report')->nullable();
             $table->text('destruction_reason')->nullable();
             $table->string('barcode')->unique();

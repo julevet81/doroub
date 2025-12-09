@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-	projects
+	المتطوعون
 
 @endsection
 @section('css')
@@ -14,7 +14,7 @@
 	<div class="breadcrumb-header justify-content-between">
 		<div class="my-auto">
 			<div class="d-flex">
-				<h4 class="content-title mb-0 my-auto">المشاريع</h4>
+				<h4 class="content-title mb-0 my-auto">المتطوعون</h4>
 			</div>
 		</div>
 
@@ -31,8 +31,8 @@
 						<div class="card-header pb-0">
 							<div class="d-flex justify-content-between">
 								<!-- Button trigger modal -->
-								<a href="{{ route('projects.create') }}" class="btn btn-primary">
-									إضافة مشروع جديد
+								<a href="{{ route('volunteers.create') }}" class="btn btn-primary">
+									إضافة متطوع جديد
 								</a>
 							</div>
 						</div>
@@ -58,33 +58,34 @@
 									<thead>
 										<tr>
 											<th class="border-bottom-0" style="font-size: x-large">الرقم</th>
-											<th class="border-bottom-0" style="font-size: x-large">الاسم</th>
-											<th class="border-bottom-0" style="font-size: x-large">النوع</th>
-											<th class="border-bottom-0" style="font-size: x-large">الحالة</th>
-											<th class="border-bottom-0" style="font-size: x-large">تاريخ البدء</th>
-											<th class="border-bottom-0" style="font-size: x-large">تاريخ الانتهاء</th>
-											<th class="border-bottom-0" style="font-size: x-large">السعر</th>
+											<th class="border-bottom-0" style="font-size: x-large"> الاسم الكامل</th>
+											<th class="border-bottom-0" style="font-size: x-large">الرقم الوطني</th>
+											<th class="border-bottom-0" style="font-size: x-large">الهاتف</th>
+											<th class="border-bottom-0" style="font-size: x-large"> الاشتراكات</th>
+											<th class="border-bottom-0" style="font-size: x-large"> البريد الإلكتروني</th>
+											<th class="border-bottom-0" style="font-size: x-large">تم الانشاء في</th>
 											<th class="border-bottom-0" style="font-size: x-large">الاجراءات</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
-										@foreach($projects as $project)
+										@foreach($volunteers as $volunteer)
 											<tr>
-												<td>{{ $project->id }}</td>
-												<td>{{ $project->name }}</td>
-												<td>{{ $project->type }}</td>
-												<td>{{ $project->status }}</td>
-												<td>{{ $project->start_date }}</td>
-												<td>{{ $project->end_date }}</td>
-												<td>{{ $project->budget }}</td>
-												<td>{{ $project->created_at }}</td>
+												<td>{{ $volunteer->id }}</td>
+												<td>{{ $volunteer->full_name }}</td>
+												<td>{{ $volunteer->national_id }}</td>
+												<td>{{ $volunteer->phone_1 }}</td>
+												<td>{{ $volunteer->subscriptions }}</td>
+												<td>{{ $volunteer->email }}</td>
+												<td>{{ $volunteer->created_at }}</td>
 												<td>
-													<a class="modal-effect btn btn-sm btn-success" href="{{ route('projects.show', $project->id) }}">عرض<i class="las la-pen"></i></a>
-													<a class="modal-effect btn btn-sm btn-info"  href="{{ route('projects.edit', $project->id) }}">تعديل<i class="las la-pen"></i></a>
-													<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$project->id}}">حذف<i class="las la-trash"></i></a>
+													<a class="modal-effect btn btn-sm btn-success" href="{{ route('volunteers.show', $volunteer->id) }}">عرض<i class="las la-pen"></i></a>
+													<a class="modal-effect btn btn-sm btn-info"  href="{{ route('volunteers.edit', $volunteer->id) }}">تعديل<i class="las la-pen"></i></a>
+													<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$volunteer->id}}">حذف<i class="las la-trash"></i></a>
 												</td>
+												<td></td>
 											</tr>
-											@include('projects.delete')
+											@include('volunteers.delete')
 										@endforeach
 									</tbody>
 								</table>

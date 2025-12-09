@@ -13,6 +13,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FinancialTransactionController;
+use App\Http\Controllers\InventoryOutController;
 use App\Http\Controllers\InventoryTransactionController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MunicipalityController;
@@ -29,11 +30,11 @@ use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard.users.signin');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard.users.dashboard');
+    return view('projects.index');
 })->middleware(['auth', 'verified'])->name('dashboard.index');
 
 Route::get('/test', [TestController::class, 'index'])->middleware(['auth', 'verified'])->name('test');
@@ -65,12 +66,15 @@ Route::middleware('auth')->group(function () {
     ##################### Inventory Transactions Routes #########################
     Route::resource('inventory_transactions', InventoryTransactionController::class);
 
+    Route::resource('inventory_out', InventoryOutController::class);
+
     ##################### Beneficiary Categories Routes #########################
     Route::resource('beneficiary_categories', BeneficiaryCategoryController::class);
 
     ##################### Beneficiaries Routes #########################
-    Route::resource('beneficiaries', BeneficiaryController::class);
     Route::get('/get-municipalities/{district_id}', [BeneficiaryController::class, 'getMunicipalities']);
+    Route::resource('beneficiaries', BeneficiaryController::class);
+    
 
 
     ##################### Children Routes #########################
@@ -96,9 +100,24 @@ Route::middleware('auth')->group(function () {
 
     ####################### Demonded Items Routes #########################
     Route::resource('demonded_items', DemondedItemController::class);
-    
+
     ####################### Devices Routes #########################
+
+    Route::get('/devices/loaned', [DeviceController::class, 'loaned'])->name('devices.loaned');
+    Route::get('/devices/returned', [DeviceController::class, 'returned'])->name('devices.returned');
+    Route::get('/devices/destructed', [DeviceController::class, 'destructed'])
+        ->name('devices.destructed');
+    Route::put('/devices/{device}/destruct', [DeviceController::class, 'destruct'])
+        ->name('devices.destruct');
+    Route::get('/devices/{device}/print-form', [DeviceController::class, 'printForm'])
+        ->name('devices.printForm');
+
+    Route::post('/devices/{device}/print', [DeviceController::class, 'print'])
+        ->name('devices.print');
+
     Route::resource('devices', DeviceController::class);
+    
+
 
     ####################### Registrations Routes #########################
     Route::resource('registrations', RegistrationController::class);

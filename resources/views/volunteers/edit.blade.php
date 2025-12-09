@@ -1,14 +1,15 @@
 @extends('dashboard.layouts.master')
 @section('title')
-  Edit project
+  تعديل المتطوع
 @endsection
 @section('css')
 @endsection
 
 @section('content')
 
+  <br>
   <div class="container">
-      <h2>Edit project</h2>
+      <h2>تعديل المتطوع</h2>
       <div>
           {{-- Show Success Message --}}
           @if(session('success'))
@@ -27,152 +28,141 @@
           @endif
       </div>
 
-      <form action="{{ route('projects.update', $project->id) }}" method="POST">
+      <form action="{{ route('volunteers.update', $volunteer->id) }}" method="POST">
           @csrf
           @method('PUT')
 
-          {{-- project Name --}}
+          {{-- Full Name --}}
           <div class="mb-3">
-              <label for="name" class="form-label">project Name</label>
-              <input type="text" name="name" id="name"
-                     value="{{ old('name', $project->name) }}"
-                     class="form-control" required>
-          </div>
-          {{-- Owner --}}
-          <div class="mb-3">
-            <label>Owner</label>
-            <select name="owner_id" id="owner_id" class="form-control" required>
-                <option value="">-- Select Owner --</option>
-                @foreach($owners as $owner)
-                    <option value="{{ $owner->id }}" {{ $project->owner_id == $owner->id ? 'selected' : '' }}>
-                        {{ $owner->name }}
-                    </option>
-                @endforeach
-            </select>
-            <span id="owner-warning" class="text-warning"></span>
+            <label class="form-label">الاسم الكامل</label>
+            <input type="text" name="full_name" class="form-control" value="{{ old('full_name', $volunteer->full_name) }}"
+              required>
+            @error('full_name') <small class="text-danger">{{ $message }}</small> @enderror
           </div>
 
-
-          {{-- Device --}}
+          {{-- Membership ID --}}
           <div class="mb-3">
-            <label>Device</label>
-            <select name="device_id" id="device_id" class="form-control" required>
-                <option value="">-- Select Device --</option>
-                @foreach($devices as $device)
-                    <option value="{{ $device->id }}" {{ $project->device_id == $device->id ? 'selected' : '' }}>
-                        {{ $device->name }}
-                    </option>
-                @endforeach
+            <label class="form-label">رقم العضوية</label>
+            <input type="text" name="membership_id" class="form-control"
+              value="{{ old('membership_id', $volunteer->membership_id) }}" required>
+            @error('membership_id') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- Gender --}}
+          <div class="mb-3">
+            <label class="form-label">الجنس</label>
+            <select name="gender" class="form-control" required>
+              <option value="male" {{ old('gender', $volunteer->gender) == 'male' ? 'selected' : '' }}>ذكر</option>
+              <option value="female" {{ old('gender', $volunteer->gender) == 'female' ? 'selected' : '' }}>أنثى</option>
             </select>
-            <span id="device-warning" class="text-warning"></span>
-        </div>
-          
+            @error('gender') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
 
           {{-- Email --}}
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <label class="form-label">البريد الإلكتروني</label>
+            <input type="email" name="email" class="form-control" value="{{ old('email', $volunteer->email) }}">
+            @error('email') <small class="text-danger">{{ $message }}</small> @enderror
           </div>
-          {{-- Phone --}}
+
+          {{-- Phones --}}
           <div class="mb-3">
-            <label>Phone</label>
-            <select name="phone_id" class="form-control" required>
-                <option value="">-- Select Phone --</option>
-                @foreach($phones as $phone)
-                    <option value="{{ $phone->id }}" {{ $project->phone_id == $phone->id ? 'selected' : '' }}>
-                        {{ $phone->number }}
-                    </option>
-                @endforeach
+            <label class="form-label">الهاتف 1</label>
+            <input type="text" name="phone_1" class="form-control" value="{{ old('phone_1', $volunteer->phone_1) }}">
+            @error('phone_1') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">الهاتف 2</label>
+            <input type="text" name="phone_2" class="form-control" value="{{ old('phone_2', $volunteer->phone_2) }}">
+            @error('phone_2') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- Address --}}
+          <div class="mb-3">
+            <label class="form-label">العنوان</label>
+            <input type="text" name="address" class="form-control" value="{{ old('address', $volunteer->address) }}">
+            @error('address') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- Date of Birth --}}
+          <div class="mb-3">
+            <label class="form-label">تاريخ الميلاد</label>
+            <input type="date" name="date_of_birth" class="form-control"
+              value="{{ old('date_of_birth', $volunteer->date_of_birth) }}">
+            @error('date_of_birth') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- National ID --}}
+          <div class="mb-3">
+            <label class="form-label">الرقم الوطني</label>
+            <input type="text" name="national_id" class="form-control" value="{{ old('national_id', $volunteer->national_id) }}">
+            @error('national_id') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- Joining Date --}}
+          <div class="mb-3">
+            <label class="form-label">تاريخ الانضمام</label>
+            <input type="date" name="joining_date" class="form-control"
+              value="{{ old('joining_date', $volunteer->joining_date) }}">
+            @error('joining_date') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- Skills --}}
+          <div class="mb-3">
+            <label class="form-label">المهارات</label>
+            <input type="text" name="skills" class="form-control" value="{{ old('skills', $volunteer->skills) }}">
+            @error('skills') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- Study Level --}}
+          <div class="mb-3">
+            <label class="form-label">المستوى الدراسي</label>
+            <select name="study_level" class="form-control">
+              <option value="">اختر المستوى</option>
+              @foreach(['primary', 'intermediate', 'secondary', 'high_school', 'bachelor', 'master', 'phd', 'other'] as $level)
+                <option value="{{ $level }}" {{ old('study_level', $volunteer->study_level) == $level ? 'selected' : '' }}>
+                  {{ ucfirst($level) }}</option>
+              @endforeach
             </select>
-            <span id="phone-warning" class="text-warning"></span>
           </div>
 
-          {{-- Credit Card Section --}}
+          {{-- Grade --}}
           <div class="mb-3">
-            <label>Credit Card</label>
-            <select name="credit_card_id" id="credit_card_id" class="form-control" required>
-                <option value="">-- Select Card --</option>
-                @foreach($creditCards as $card)
-                    <option value="{{ $card->id }}" {{ $project->credit_card_id == $card->id ? 'selected' : '' }}>
-                        {{ $card->number }}
-                    </option>
-                @endforeach
-            </select>
-              <span id="credit-warning" class="text-warning"></span>
-          </div>
-          {{-- Network --}}
-          <div class="mb-3">
-            <label>Network</label>
-            <select name="network_id" id="network_id" class="form-control" required>
-                <option value="">-- Select Network --</option>
-                @foreach($networks as $network)
-                    <option value="{{ $network->id }}" {{ $project->network_id == $network->id ? 'selected' : '' }}>
-                        {{ $network->name }}
-                    </option>
-                @endforeach
-            </select>
-              <span id="network-warning" class="text-warning"></span>
-         </div>
-          {{-- Status --}}
-          <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select name="status" id="status" class="form-control" required>
-                <option value="new" {{ $project->status == 'new' ? 'selected' : '' }}>New</option>
-                <option value="verified" {{ $project->status == 'verified' ? 'selected' : '' }}>Verified</option>
-                <option value="ready" {{ $project->status == 'ready' ? 'selected' : '' }}>Ready</option>
+            <label class="form-label">الرتبة</label>
+            <select name="grade" class="form-control">
+              <option value="">اختر الرتبة</option>
+              @foreach(['founder', 'active', 'honorary'] as $grade)
+                <option value="{{ $grade }}" {{ old('grade', $volunteer->grade) == $grade ? 'selected' : '' }}>{{ ucfirst($grade) }}
+                </option>
+              @endforeach
             </select>
           </div>
-          
-          {{-- Publication Price --}}
+
+          {{-- Section --}}
           <div class="mb-3">
-            <label for="publication_price" class="form-label">Publication Price</label>
-            <input type="number" class="form-control" id="publication_price" name="publication_price" 
-            value="{{ old('publication_price', $project->publication_price) }}">
+            <label class="form-label">القسم</label>
+            <select name="section" class="form-control">
+              <option value="">اختر القسم</option>
+              @foreach(['planning', 'entry', 'executive', 'finance', 'management', 'resources', 'relations', 'media', 'social'] as $section)
+                <option value="{{ $section }}" {{ old('section', $volunteer->section) == $section ? 'selected' : '' }}>
+                  {{ ucfirst($section) }}</option>
+              @endforeach
+            </select>
           </div>
 
-          {{-- Weekly Price --}}
+          {{-- Notes --}}
           <div class="mb-3">
-            <label for="weekly_price" class="form-label">weekly_price</label>
-            <input type="number" class="form-control" id="weekly_price" name="weekly_price"
-            value="{{ old('weekly_price', $project->weekly_price) }}">
+            <label class="form-label">ملاحظات</label>
+            <textarea name="notes" class="form-control">{{ old('notes', $volunteer->notes) }}</textarea>
           </div>
 
-          {{-- Update Price --}}
+          {{-- Subscriptions --}}
           <div class="mb-3">
-            <label for="update_price" class="form-label">Update Price</label>
-            <input type="number" class="form-control" id="update_price" name="update_price"
-            value="{{ old('update_price', $project->update_price) }}">
+            <label class="form-label">الاشتراكات</label>
+            <input type="text" name="subscriptions" class="form-control"
+              value="{{ old('subscriptions', $volunteer->subscriptions) }}">
           </div>
-
-          {{-- Upload Price --}}
-          <div class="mb-3">
-            <label for="upload_price" class="form-label">Upload Price</label>
-            <input type="number" class="form-control" id="upload_price" name="upload_price"
-            value="{{ old('upload_price', $project->upload_price) }}">
-          </div>
-
-          {{-- Purchase Price --}}
-          <div class="mb-3">
-            <label for="price" class="form-label">Purchase Price</label>
-            <input type="number" class="form-control" id="price" name="price"
-            value="{{ old('price', $project->price) }}">
-          </div>
-
-          {{-- Open Date --}}
-          <div class="mb-3">
-            <label for="open_date" class="form-label">Open Date</label>
-            <input type="date" class="form-control" id="open_date" name="open_date"
-            value="{{ old('open_date', $project->open_date ? $project->open_date->format('Y-m-d') : '') }}">
-          </div>
-
-          {{-- Activation Date --}}
-          <div class="mb-3">
-            <label for="activation_date" class="form-label">Activation Date</label>
-            <input type="date" class="form-control" id="activation_date" name="activation_date"
-            value="{{ old('activation_date', $project->activation_date ? $project->activation_date->format('Y-m-d') : '') }}">
-          </div>
-
-
 
           {{-- Submit --}}
           <button type="submit" class="btn btn-primary">Update project</button>

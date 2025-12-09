@@ -14,7 +14,7 @@
 	<div class="breadcrumb-header justify-content-between">
 		<div class="my-auto">
 			<div class="d-flex">
-				<h4 class="content-title mb-0 my-auto"> التسجيلات</h4>
+				<h4 class="content-title mb-0 my-auto" style="font-size: xx-large"> التسجيلات</h4>
 			</div>
 		</div>
 

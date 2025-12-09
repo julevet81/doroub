@@ -11,6 +11,7 @@ class Device extends Model
         'serial_number',
         'usage_count',
         'status',
+        'is_destructed',
         'destruction_report',
         'destruction_reason',  
         'barcode',

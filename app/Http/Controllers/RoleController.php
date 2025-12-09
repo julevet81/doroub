@@ -57,7 +57,7 @@ class RoleController extends Controller
         $roleData = [
             'الاسم' => $role->name,
             'الوصف' => $role->description,
-            'الصلاحيات' => $role->permissions->pluck('name')->join(', '),
+            'الصلاحيات' => $role->permissions->pluck('name')->join(' , '),
             
         ];
 

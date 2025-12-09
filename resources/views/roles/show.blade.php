@@ -22,17 +22,17 @@
         <h2>بيانات الدور</h2>
     </div>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" style="font-size: x-large">
         <thead>
             <tr>
-                <th>المفتاح</th>
-                <th>القيمة</th>
+                <th style="font-size: x-large">المفتاح</th>
+                <th style="font-size: x-large">القيمة</th>
             </tr>
         </thead>
         <tbody>
             @foreach($roleData as $key => $value)
                 <tr>
-                    <td>{{ ucfirst(str_replace('_', ' ', $key)) }}</td>
+                    <td>{{ $key }}</td>
                     <td>{{ $value }}</td>
                 </tr>
             @endforeach

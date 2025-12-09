@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-	الخارج من المخزون
+	الاجهزة المتلفة
 
 @endsection
 @section('css')
@@ -14,7 +14,7 @@
 	<div class="breadcrumb-header justify-content-between">
 		<div class="my-auto">
 			<div class="d-flex">
-				<h4 class="content-title mb-0 my-auto" style="font-size: x-large">الخارج من المخزون</h4>
+				<h4 class="content-title mb-0 my-auto" style="font-size: x-large">الاجهزة المتلفة</h4>
 			</div>
 		</div>
 
@@ -28,14 +28,6 @@
 				<!--div-->
 				<div class="col-xl-12">
 					<div class="card mg-b-20">
-						<div class="card-header pb-0">
-							<div class="d-flex justify-content-between">
-								<!-- Button trigger modal -->
-								<a href="{{ route('inventory_out.create') }}" class="btn btn-primary" style="font-size: large">
-									تسجيل خارج من المخزون
-								</a>
-							</div>
-						</div>
 						<div>
 							@if(session('success'))
 								<div class="alert alert-success">
@@ -55,29 +47,36 @@
 						<div class="card-body">
 							<div class="table-responsive">
 								<table id="example" class="table key-buttons text-md-nowrap">
-									<thead>
+									<thead class="text-center">
 										<tr>
 											<th class="border-bottom-0" style="font-size: x-large">الرقم</th>
-											<th class="border-bottom-0" style="font-size: x-large">التوحيه</th>
-											<th class="border-bottom-0" style="font-size: x-large">التاريخ</th>
-											<th class="border-bottom-0" style="font-size: x-large">الاجراءات</th>
+											<th class="border-bottom-0" style="font-size: x-large">الاسم</th>
+											<th class="border-bottom-0" style="font-size: x-large">الكود بار</th>
+											<th class="border-bottom-0" style="font-size: x-large">رقم الجرد</th>
+											<th class="border-bottom-0" style="font-size: x-large">الاجراءات </th>
 											<th></th>
 										</tr>
 									</thead>
-									<tbody>
-										@foreach($inventory_outs as $inventory_out)
+									<tbody  style="font-size: x-large">
+										@foreach($devices as $device)
 											<tr>
-												<td>{{ $inventory_out->id }}</td>
-												<td>{{ $inventory_out->orientation }}</td>
-												<td>{{ $inventory_out->transaction_date }}</td>
+												<td>{{ $device->id }}</td>
+												<td>{{ $device->name }}</td>
+												<td>{{ $device->barcode }}</td>
+												<td>{{ $device->serial_number }}</td>
 												<td>
-													<a class="modal-effect btn btn-sm btn-success" href="{{ route('inventory_out.show', $inventory_out->id) }}">عرض<i class="las la-pen"></i></a>
-													<a class="modal-effect btn btn-sm btn-info"  href="{{ route('inventory_out.edit', $inventory_out->id) }}">تعديل<i class="las la-pen"></i></a>
-													<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$inventory_out->id}}">حذف<i class="las la-trash"></i></a>
+													<a class="modal-effect btn btn-sm btn-success" href="{{ route('devices.show', $device->id) }}">عرض<i class="las la-pen"></i></a>
+													<a class="modal-effect btn btn-sm btn-info"  href="{{ route('devices.edit', $device->id) }}">تعديل<i class="las la-pen"></i></a>
+													<a href="{{ route('devices.printForm', $device->id) }}" class="btn btn-secondary btn-sm">
+														<i class="fa fa-print"></i> إعداد محضر الإتلاف
+													</a>
+
+
+													<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$device->id}}">حذف<i class="las la-trash"></i></a>
 												</td>
 												<td></td>
 											</tr>
-											@include('inventory_out.delete')
+											@include('devices.delete')
 										@endforeach
 									</tbody>
 								</table>

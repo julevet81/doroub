@@ -6,7 +6,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">إضافة إلى المخزون</h4>
+							<h4 class="content-title mb-0 my-auto">تسجيل خارج من المخزون</h4>
 						</div>
 					</div>
 					
@@ -21,70 +21,88 @@
 						<div class="card-body">
 							<form action="{{ route('inventory_transactions.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
 								@csrf
-								<div class="row">
-									<div class="col">
-										<label for="donor_id" class="control-label" style="font-size: x-large">المتبرع</label>
-										<select name="donor_id" id="donor_id" class="form-control" style="font-size: x-large">
-											<option value="">اختر المتبرع</option>
-											@foreach($donors as $donor)
-												<option value="{{ $donor->id }}">{{ $donor->full_name }}</option>
-											@endforeach
-										</select>
-									</div>
-									<div class="col">
-										<label for="transaction_date" class="control-label" style="font-size: x-large">تاريخ الإضافة</label>
-										<input type="date" name="transaction_date" id="transaction_date" class="form-control" style="font-size: x-large" required>
-									</div>
-								</div>
-								<br>
-								<div class="row">
-									<div class="col-12">
-										<label style="font-size: x-large">العناصر</label>
-
-										<div id="items-container">
-
-											<div class="row mb-2 item-row">
-												<div class="col">
-													<select name="items[0][assistance_item_id]" class="form-control" required
-														style="font-size: x-large">
-														<option value="">اختر العنصر</option>
-														@foreach($assistance_items as $item)
-															<option value="{{ $item->id }}">{{ $item->name }}</option>
-														@endforeach
-													</select>
-												</div>
-
-												<div class="col">
-													<input type="number" name="items[0][quantity]" class="form-control" placeholder="الكمية" min="1"
-														required style="font-size: x-large">
-												</div>
-
-												<div class="col-auto">
-													<button type="button" class="btn btn-danger remove-row">X</button>
-												</div>
-											</div>
-
-										</div>
-
-										<button type="button" id="add-item" class="btn btn-success" style="font-size: x-large">إضافة عنصر آخر</button>
-									</div>
+								{{-- ==================== اختيار الجهة ==================== --}}
+								<div class="mb-3">
+									<label class="form-label">الجهة المستفيدة</label>
+									<select id="destination_type" name="destination_type" class="form-control" required>
+										<option value="">-- اختر الجهة --</option>
+										<option value="project">مشروع</option>
+										<option value="family">عائلة مكفولة</option>
+										<option value="other">أخرى</option>
+									</select>
 								</div>
 
-								<br>
-								<div class="row">
-									<div class="col">
-										<label for="orientation" class="control-label" style="font-size: x-large">التوجيه</label>
-										<select name="orientation" id="orientation" class="form-control" style="font-size: x-large" required>
-											<option value="" disabled selected>اختار التوجيه</option>
-											<option value="project">مشروع</option>
-											<option value="inventory">مخزون</option>
-										</select>
-									</div>
-									<div class="col">
-										<label for="notes" class="control-label" style="font-size: x-large">ملاحظات</label>
-										<textarea name="notes" id="notes" class="form-control" style="font-size: x-large" rows="3"></textarea>
-									</div>
+								{{-- مشروع --}}
+								<div class="mb-3 d-none" id="project_select">
+									<label class="form-label">اختر المشروع</label>
+									<select name="project_id" class="form-control">
+										<option value="">-- اختر مشروع --</option>
+										@foreach ($projects as $project)
+											<option value="{{ $project->id }}">{{ $project->name }}</option>
+										@endforeach
+									</select>
 								</div>
+
+								{{-- عائلة --}}
+								<div class="mb-3 d-none" id="family_select">
+									<label class="form-label">اختر العائلة</label>
+									<select name="family_id" class="form-control">
+										<option value="">-- اختر عائلة --</option>
+										@foreach ($families as $family)
+											<option value="{{ $family->id }}">{{ $family->full_name }}</option>
+										@endforeach
+									</select>
+								</div>
+
+								{{-- جهة أخرى --}}
+								<div class="mb-3 d-none" id="other_input">
+									<label class="form-label">اكتب الجهة</label>
+									<input type="text" name="other_destination" class="form-control" placeholder="أدخل الجهة يدوياً">
+								</div>
+
+								<hr>
+
+								{{-- ==================== العناصر الخارجة ==================== --}}
+								<h5>العناصر الخارجة</h5>
+
+								<table class="table table-bordered" id="items_table">
+									<thead>
+										<tr>
+											<th style="font-size: large">العنصر</th>
+											<th style="font-size: large">الكمية</th>
+											<th style="font-size: large">إزالة</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr style="font-size: large">
+											<td>
+												<select name="items[0][item_id]" class="form-control" required>
+													<option value="">-- اختر عنصر --</option>
+													@foreach ($items as $item)
+														<option value="{{ $item->id }}">{{ $item->name }}</option>
+													@endforeach
+												</select>
+											</td>
+											<td>
+												<input type="number" name="items[0][qty]" class="form-control" min="1" required>
+											</td>
+											<td class="text-center">
+												<button type="button" class="btn btn-danger btn-sm removeRow">حذف</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<button type="button" class="btn btn-primary mb-3" id="addRow">
+									+ إضافة عنصر آخر
+								</button>
+
+								{{-- وصف عام --}}
+								<div class="mb-3">
+									<label class="form-label">وصف الخروج</label>
+									<textarea name="description" class="form-control" rows="3"></textarea>
+								</div>
+
 								<br>
 
 								<button type="submit" class="btn btn-primary" style="font-size: x-large">حفظ البيانات</button>
@@ -100,39 +118,60 @@
 @endsection
 @section('js')
 	<script>
-		let index = 1;
+		// إظهار الجهة حسب الاختيار
+		document.getElementById('destination_type').addEventListener('change', function () {
+			let type = this.value;
 
-		document.getElementById('add-item').addEventListener('click', function () {
-			let container = document.getElementById('items-container');
+			document.getElementById('project_select').classList.add('d-none');
+			document.getElementById('family_select').classList.add('d-none');
+			document.getElementById('other_input').classList.add('d-none');
 
-			let row = `
-			<div class="row mb-2 item-row">
-				<div class="col">
-					<select name="items[${index}][assistance_item_id]" class="form-control" required style="font-size: x-large">
-						<option value="">اختر العنصر</option>
-						@foreach($assistance_items as $item)
-							<option value="{{ $item->id }}">{{ $item->name }}</option>
-						@endforeach
-					</select>
-				</div>
-
-				<div class="col">
-					<input type="number" name="items[${index}][quantity]" class="form-control" min="1" placeholder="الكمية" required style="font-size: x-large">
-				</div>
-
-				<div class="col-auto">
-					<button type="button" class="btn btn-danger remove-row">X</button>
-				</div>
-			</div>
-			`;
-
-			container.insertAdjacentHTML('beforeend', row);
-			index++;
+			if (type === 'project') {
+				document.getElementById('project_select').classList.remove('d-none');
+			}
+			else if (type === 'family') {
+				document.getElementById('family_select').classList.remove('d-none');
+			}
+			else if (type === 'other') {
+				document.getElementById('other_input').classList.remove('d-none');
+			}
 		});
 
+		// إضافة صف جديد للعناصر
+		let rowIndex = 1;
+
+		document.getElementById('addRow').addEventListener('click', function () {
+
+			let table = document.querySelector('#items_table tbody');
+
+			let row = `
+				<tr>
+					<td>
+						<select name="items[${rowIndex}][item_id]" class="form-control" required>
+							<option value="">-- اختر عنصر --</option>
+							@foreach ($items as $item)
+								<option value="{{ $item->id }}">{{ $item->name }}</option>
+							@endforeach
+						</select>
+					</td>
+					<td>
+						<input type="number" name="items[${rowIndex}][qty]" class="form-control" min="1" required>
+					</td>
+					<td class="text-center">
+						<button type="button" class="btn btn-danger btn-sm removeRow">حذف</button>
+					</td>
+				</tr>
+			`;
+
+			table.insertAdjacentHTML('beforeend', row);
+
+			rowIndex++;
+		});
+
+		// حذف صف
 		document.addEventListener('click', function (e) {
-			if (e.target.classList.contains('remove-row')) {
-				e.target.closest('.item-row').remove();
+			if (e.target.classList.contains('removeRow')) {
+				e.target.closest('tr').remove();
 			}
 		});
 	</script>

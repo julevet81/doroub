@@ -58,9 +58,9 @@
 								<table class="table" id="itemsTable">
 									<thead>
 										<tr>
-											<th>الصنف</th>
-											<th>الكمية</th>
-											<th>إجراءات</th>
+											<th style="font-size: large">الصنف</th>
+											<th style="font-size: large">الكمية</th>
+											<th style="font-size: large">إجراءات</th>
 										</tr>
 									</thead>
 									<tbody>

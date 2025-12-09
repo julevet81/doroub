@@ -1,14 +1,14 @@
 @extends('dashboard.layouts.master')
 @section('title')
-    تعديل الدور
+  تعديل الجهاز
 @endsection
 @section('css')
 @endsection
 
 @section('content')
-  <br>
-  <div class="container" style="font-size: large">
-      <h2>تعديل الدور</h2>
+
+  <div class="container">
+      <h2>نعديل الجهاز</h2>
       <div>
           {{-- Show Success Message --}}
           @if(session('success'))
@@ -27,33 +27,44 @@
           @endif
       </div>
 
-      <form  style="font-size: x-large" action="{{ route('roles.update', $role->id) }}" method="POST">
+      <form action="{{ route('devices.update', $device->id) }}" method="POST">
           @csrf
           @method('PUT')
 
-          <div class="form-group mb-3">
-              <label>اسم الدور</label>
-              <input type="text" name="name" class="form-control" value="{{ $role->name }}" required>
-          </div>
-          <div class="form-group mb-3">
-              <label>الوصف</label>
-              <textarea name="description" class="form-control" rows="3">{{ $role->description }}</textarea>
-          </div>
-          <h4>الصلاحيات</h4>
-          <div class="row">
-              @foreach($permissions as $permission)
-                  <div class="col-md-3">
-                      <label>
-                          <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
-                              {{ in_array($permission->name, $rolePermissions) ? 'checked' : '' }}>
-                          {{ $permission->name }}
-                      </label>
-                  </div>
-              @endforeach
+          {{-- Device Name --}}
+          <div class="mb-3">
+            <label class="form-label">اسم الجهاز</label>
+            <input type="text" name="name" class="form-control" value="{{ old('name', $device->name) }}" required>
+            @error('name') <small class="text-danger">{{ $message }}</small> @enderror
           </div>
 
+          {{-- Serial Number --}}
+          <div class="mb-3">
+            <label class="form-label">الرقم التسلسلي</label>
+            <input type="text" name="serial_number" class="form-control"
+              value="{{ old('serial_number', $device->serial_number) }}" required>
+            @error('serial_number') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+          {{-- Barcode (read-only) --}}
+          <div class="mb-3">
+            <label class="form-label">الباركود</label>
+            <input type="text" class="form-control" value="{{ $device->barcode }}" readonly>
+          </div>
+
+          {{-- Status --}}
+          <div class="mb-3">
+            <label class="form-label">حالة الاعارة</label>
+            <select name="status" class="form-control">
+              <option value="1" {{ $device->status ? 'selected' : '' }}>نعم</option>
+              <option value="0" {{ !$device->status ? 'selected' : '' }}>لا</option>
+            </select>
+            @error('status') <small class="text-danger">{{ $message }}</small> @enderror
+          </div>
+
+
           {{-- Submit --}}
-          <button type="submit" class="btn btn-primary">تحديث الدور</button>
+          <button type="submit" class="btn btn-primary">Update project</button>
       </form>
   </div>
 @endsection
@@ -101,5 +112,6 @@
 
     });
   </script>
+
 
 @endsection
