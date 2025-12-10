@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Beneficiary;
 use App\Models\FinancialTransaction;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
@@ -21,36 +23,51 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        return view('expenses.create');
+        $projects = Project::all();
+        $beneficiaries = Beneficiary::all();
+        return view('expenses.create', compact('projects', 'beneficiaries'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
+{
+    $request->validate([
+        'out_orientation' => 'required|string',
+        'transaction_date' => 'required|date',
+        'amount' => 'required|numeric',
+        'project_id' => 'required_if:out_orientation,project|nullable|exists:projects,id',
+        'beneficiary_id' => 'required_if:out_orientation,sponsored_family|nullable|exists:beneficiaries,id',
+        'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+        'notes' => 'nullable|string|max:1000',
+    ]);
 
-        $request->validate([
-            'amount' => 'required|numeric',
-            'orientation' => 'nullable|in:project,family',
-            'payment_method' => 'nullable|in:cash,bank_transfer,credit_card,other',
-            'invoice_id' => 'nullable|exists:invoices,id',
-            'description' => 'nullable|string',
-            'transaction_date' => 'required|date',
-        ]);
+    $data = [
+        'out_orientation' => $request->out_orientation,
+        'transaction_type' => 'expense',
+        'transaction_date' => $request->transaction_date,
+        'amount' => $request->amount,
+        'notes' => $request->notes,
+    ];
 
-        $expense = FinancialTransaction::create($request->all());
-        $expense->previous_balance = FinancialTransaction::latest()->value('new_balance') ?? 0;
-        $expense->new_balance = $expense->previous_balance - $expense->amount;
-        $expense->save();
-
-
-        return redirect()->route('expenses.index')->with('success', 'تم إنشاء المصروف بنجاح.');
+    // Attach project_id or beneficiary_id depending on the orientation
+    if ($request->out_orientation === 'project') {
+        $data['project_id'] = $request->project_id;
+    } elseif ($request->out_orientation === 'sponsored_family') {
+        $data['beneficiary_id'] = $request->beneficiary_id;
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Handle file upload if exists
+    if ($request->hasFile('attachment')) {
+        $file = $request->file('attachment');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('attachments'), $filename);
+        $data['attachment'] = $filename;
+    }
+
+    FinancialTransaction::create($data);
+
+    return redirect()->route('expenses.index')->with('success', 'تم حفظ البيانات بنجاح');
+}
+
     public function show(string $id)
     {
         $expense = FinancialTransaction::findOrFail($id);

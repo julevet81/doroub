@@ -14,6 +14,7 @@ class FinancialTransaction extends Model
         'transaction_type',
         'donor_id',
         'orientation',
+        'out_orientation',
         'payment_method',
         'previous_balance',
         'new_balance',

@@ -2,111 +2,100 @@
 @section('css')
 @endsection
 @section('page-header')
-				<!-- breadcrumb -->
-				<div class="breadcrumb-header justify-content-between">
-					<div class="my-auto">
-						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">إضافة معاملة مالية</h4>
-						</div>
-					</div>
-					
-				</div>
-				<!-- breadcrumb -->
+<!-- breadcrumb -->
+<div class="breadcrumb-header justify-content-between">
+	<div class="my-auto">
+		<div class="d-flex">
+			<h4 class="content-title mb-0 my-auto">إضافة معاملة مالية</h4>
+		</div>
+	</div>
+
+</div>
+<!-- breadcrumb -->
 @endsection
 @section('content')
-			<!-- row -->
-			<div class="row">
-				<div class="col-lg-12 col-md-12">
-					<div class="card" style="font-size: x-large">
-						<div class="card-body">
-							<form action="{{ route('inventory_transactions.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
-								@csrf
-								<div class="row">
-									<div class="col">
-										<label for="donor_id" class="control-label" style="font-size: x-large">المتبرع</label>
-										<select name="donor_id" id="donor_id" class="form-control" style="font-size: x-large">
-											<option value="">اختر المتبرع</option>
-											@foreach($donors as $donor)
-												<option value="{{ $donor->id }}">{{ $donor->full_name }}</option>
-											@endforeach
-										</select>
-									</div>
-									<div class="col">
-										<label for="transaction_date" class="control-label" style="font-size: x-large">تاريخ الإضافة</label>
-										<input type="date" name="transaction_date" id="transaction_date" class="form-control" style="font-size: x-large" required>
-									</div>
-								</div>
-								<br>
-								<div class="col">
-									<label for="amount" class="control-label" style="font-size: x-large">المبلغ</label>
-									<input type="number" name="amount" id="amount" class="form-control" style="font-size: x-large" required>
-								</div>
-
-								<br>
-								<div class="row">
-									<div class="col">
-										<label for="orientation" class="control-label" style="font-size: x-large">التوجيه</label>
-										<select name="orientation" id="orientation" class="form-control" style="font-size: x-large" required>
-											<option value="" disabled selected>اختار التوجيه</option>
-											<option value="project">المشروع</option>
-											<option value="inventory">المخزون</option>
-										</select>
-									</div>
-									<div class="col">
-										<label for="notes" class="control-label" style="font-size: x-large">ملاحظات</label>
-										<textarea name="notes" id="notes" class="form-control" style="font-size: x-large" rows="3"></textarea>
-									</div>
-								</div>
-								<br>
-
-								<button type="submit" class="btn btn-primary" style="font-size: x-large">حفظ البيانات</button>
-							</form>
+<!-- row -->
+<div class="row">
+	<div class="col-lg-12 col-md-12">
+		<div class="card" style="font-size: large">
+			<div class="card-body">
+				<form action="{{ route('inventory_transactions.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+					@csrf
+					<div class="row">
+						<div class="col">
+							<label for="donor_id" class="control-label" style="font-size: x-large">المتبرع</label>
+							<select name="donor_id" id="donor_id" class="form-control" style="font-size: x-large">
+								<option value="">اختر المتبرع</option>
+								@foreach($donors as $donor)
+								<option value="{{ $donor->id }}">{{ $donor->full_name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="col">
+							<label for="transaction_date" class="control-label" style="font-size: x-large">تاريخ الإضافة</label>
+							<input type="date" name="transaction_date" id="transaction_date" class="form-control" style="font-size: x-large" required>
 						</div>
 					</div>
+					<br>
+					<div class="form-group" style="font-size: x-large;">
+						<label>التوجيه</label>
+						<select name="orientation" id="orientation" class="form-control">
+							<option value="">-- اختر التوجيه --</option>
+							<option value="project">المشروع</option>
+							<option value="other">الخزينة</option>
+						</select>
+					</div>
+
+					<div class="form-group" id="project-select-group" style="display:none;">
+						<label>المشروع</label>
+						<select name="project_id" class="form-control">
+							<option value="">-- اختر المشروع --</option>
+							@foreach($projects as $project)
+							<option value="{{ $project->id }}">{{ $project->name }}</option>
+							@endforeach
+						</select>
+					</div>
+
+
+
+					<br>
+					<div class="row">
+						<div class="col">
+							<label for="amount" class="control-label" style="font-size: x-large">المبلغ</label>
+							<input type="number" name="amount" id="amount" class="form-control" style="font-size: x-large" required>
+						</div>
+						<div class="col">
+							<label for="notes" class="control-label" style="font-size: x-large">ملاحظات</label>
+							<textarea name="notes" id="notes" class="form-control" style="font-size: x-large" rows="3"></textarea>
+						</div>
+					</div>
+					<br>
+
+					<button type="submit" class="btn btn-primary" style="font-size: x-large">حفظ البيانات</button>
+				</form>
 			</div>
-			<!-- row closed -->
 		</div>
-		<!-- Container closed -->
 	</div>
-	<!-- main-content closed -->
+	<!-- row closed -->
+</div>
+<!-- Container closed -->
+</div>
+<!-- main-content closed -->
 @endsection
 @section('js')
-	{{-- <script>
-		let index = 1;
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const orientationSelect = document.getElementById('orientation');
+		const projectGroup = document.getElementById('project-select-group');
 
-		document.getElementById('add-item').addEventListener('click', function () {
-			let container = document.getElementById('items-container');
-
-			let row = `
-			<div class="row mb-2 item-row">
-				<div class="col">
-					<select name="items[${index}][assistance_item_id]" class="form-control" required style="font-size: x-large">
-						<option value="">اختر العنصر</option>
-						@foreach($assistance_items as $item)
-							<option value="{{ $item->id }}">{{ $item->name }}</option>
-						@endforeach
-					</select>
-				</div>
-
-				<div class="col">
-					<input type="number" name="items[${index}][quantity]" class="form-control" min="1" placeholder="الكمية" required style="font-size: x-large">
-				</div>
-
-				<div class="col-auto">
-					<button type="button" class="btn btn-danger remove-row">X</button>
-				</div>
-			</div>
-			`;
-
-			container.insertAdjacentHTML('beforeend', row);
-			index++;
-		});
-
-		document.addEventListener('click', function (e) {
-			if (e.target.classList.contains('remove-row')) {
-				e.target.closest('.item-row').remove();
+		orientationSelect.addEventListener('change', function() {
+			if (this.value === 'project') {
+				projectGroup.style.display = 'block';
+			} else {
+				projectGroup.style.display = 'none';
 			}
 		});
-	</script> --}}
+	});
+</script>
 
 @endsection

@@ -7,7 +7,7 @@
 
 @section('content')
 
-  <div class="container">
+  <div class="container" style="font-size: x-large;">
       <h2>نعديل الجهاز</h2>
       <div>
           {{-- Show Success Message --}}
@@ -64,7 +64,7 @@
 
 
           {{-- Submit --}}
-          <button type="submit" class="btn btn-primary">Update project</button>
+          <button type="submit" class="btn btn-primary">تعديل الجهاز</button>
       </form>
   </div>
 @endsection

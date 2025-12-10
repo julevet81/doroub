@@ -83,6 +83,7 @@ License        :   Licensed under ThemeForest License
 /* ######## FONT ######## */
 /* ############### FONTS IMPORT ############### */
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900");
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500..1000&display=swap');
 /* ######## BOOTSTRAP ######## */
 /*Color variables*/
 /*gray variables*/
@@ -10178,7 +10179,7 @@ a.close.disabled {
 /* ############### PAGE LAYOUT STYLES ############### */
 /* ###### 6.3 Global  ###### */
 body {
-  font-family: "Roboto", sans-serif; }
+    font-family: "Cairo", sans-serif; }
 
 .main-body, .main-dashboard {
   min-height: 100vh;
@@ -10195,9 +10196,9 @@ body {
   left: 70%;
   transform: translate3d(-50%, -58%, 0);
   font-size: 1300px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: -10px;
-  line-height: .5;
+  line-height: .6;
   opacity: .02;
   z-index: -1;
   display: none; }

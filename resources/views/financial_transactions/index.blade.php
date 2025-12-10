@@ -31,7 +31,7 @@
 						<div class="card-header pb-0">
 							<div class="d-flex justify-content-between">
 								<!-- Button trigger modal -->
-								<a href="{{ route('financial_transactions.create') }}" class="btn btn-primary">
+								<a href="{{ route('financial_transactions.create') }}" class="btn btn-primary" style="font-size: large;">
 									إضافة مدخول
 								</a>
 							</div>

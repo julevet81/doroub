@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\District;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,13 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             PermissionSeeder::class,
+            ProjectSeeder::class,
+            DeviceSeeder::class,
+            AssistanceItemSeeder::class,
+            VolunteerSeeder::class,
+            AssistanceCategorySeeder::class,
+            //BeneficiarySeeder::class,
+            DonorSeeder::class,
         ]);
     }
 }

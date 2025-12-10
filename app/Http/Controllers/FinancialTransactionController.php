@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donor;
 use App\Models\FinancialTransaction;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class FinancialTransactionController extends Controller
@@ -23,34 +24,40 @@ class FinancialTransactionController extends Controller
     public function create()
     {
         $donors = Donor::all();
-        return view('financial_transactions.create', compact('donors'));
+        $projects = Project::all();
+        return view('financial_transactions.create', compact('donors', 'projects'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+        public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric',
-            'transaction_type' => 'required|string|max:255',
-            'donor_id' => 'nullable|exists:donors,id',
-            'orientation' => 'nullable|in:project,family',
-            'payment_method' => 'nullable|in:cash,bank_transfer,credit_card,other',
-            'invoice_id' => 'nullable|exists:invoices,id',
-            'description' => 'nullable|string',
+            'donor_id' => 'required|exists:donors,id',
             'transaction_date' => 'required|date',
+            'orientation' => 'required|in:project,other',
+            'amount' => 'required|numeric|min:0',
+            'notes' => 'nullable|string|max:1000',
+            'project_id' => 'required_if:orientation,project|exists:projects,id',
         ]);
-        $expense = FinancialTransaction::create($request->all());
-        $expense->previous_balance = FinancialTransaction::latest()->value('new_balance') ?? 0;
-        $expense->new_balance = $expense->previous_balance + $expense->amount;
-        $expense->save();
-        return redirect()->route('financial_transactions.index')->with('success', 'تم إنشاء المعاملة المالية بنجاح.');
+
+        $transaction = new FinancialTransaction();
+        $transaction->donor_id = $request->donor_id;
+        $transaction->transaction_type = 'income';
+        $transaction->transaction_date = $request->transaction_date;
+        $transaction->orientation = $request->orientation;
+        $transaction->amount = $request->amount;
+        $transaction->notes = $request->notes;
+
+        // Only set project_id if orientation is project
+        if ($request->orientation === 'project') {
+            $transaction->project_id = $request->project_id;
+        }
+
+        $transaction->save();
+
+        return redirect()->route('inventory_transactions.create')
+                         ->with('success', 'تم حفظ البيانات بنجاح');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(FinancialTransaction $financialTransaction)
     {
         return view('financial_transactions.show', compact('financialTransaction'));
