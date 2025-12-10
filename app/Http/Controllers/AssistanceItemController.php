@@ -52,6 +52,10 @@ class AssistanceItemController extends Controller
      */
     public function show(AssistanceItem $assistance_item)
     {
+        $assistance_item = [
+            'الاسم' => $assistance_item->name,
+            'الكود' => $assistance_item->code,
+        ];
         return view('assistance_items.show', compact('assistance_item'));
     }
 

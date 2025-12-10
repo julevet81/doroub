@@ -14,6 +14,7 @@ class InventoryTransaction extends Model
         'transaction_type',
         'donor_id',
         'orientation',
+        'project_id',
         'transaction_date',
         'notes',
     ];
@@ -28,4 +29,9 @@ class InventoryTransaction extends Model
                     ->withPivot('quantity')
                     ->withTimestamps();
     }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    } 
 }

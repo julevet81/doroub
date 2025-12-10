@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-	projects
+	المتبرعين
 
 @endsection
 @section('css')
@@ -14,7 +14,7 @@
 	<div class="breadcrumb-header justify-content-between">
 		<div class="my-auto">
 			<div class="d-flex">
-				<h4 class="content-title mb-0 my-auto">المشاريع</h4>
+				<h4 class="content-title mb-0 my-auto">المتبرعين</h4>
 			</div>
 		</div>
 
@@ -31,8 +31,8 @@
 						<div class="card-header pb-0">
 							<div class="d-flex justify-content-between">
 								<!-- Button trigger modal -->
-								<a href="{{ route('projects.create') }}" class="btn btn-primary">
-									إضافة مشروع جديد
+								<a href="{{ route('donors.create') }}" class="btn btn-primary">
+									إضافة متبرع جديد
 								</a>
 							</div>
 						</div>
@@ -68,23 +68,23 @@
 										</tr>
 									</thead>
 									<tbody>
-										@foreach($projects as $project)
+										@foreach($donors as $donor)
 											<tr>
-												<td>{{ $project->id }}</td>
-												<td>{{ $project->name }}</td>
-												<td>{{ $project->type }}</td>
-												<td>{{ $project->status }}</td>
-												<td>{{ $project->start_date }}</td>
-												<td>{{ $project->end_date }}</td>
-												<td>{{ $project->budget }}</td>
-												<td>{{ $project->created_at }}</td>
+												<td>{{ $donor->id }}</td>
+												<td>{{ $donor->name }}</td>
+												<td>{{ $donor->type }}</td>
+												<td>{{ $donor->status }}</td>
+												<td>{{ $donor->start_date }}</td>
+												<td>{{ $donor->end_date }}</td>
+												<td>{{ $donor->budget }}</td>
+												<td>{{ $donor->created_at }}</td>
 												<td>
-													<a class="modal-effect btn btn-sm btn-success" href="{{ route('projects.show', $project->id) }}">عرض<i class="las la-pen"></i></a>
-													<a class="modal-effect btn btn-sm btn-info"  href="{{ route('projects.edit', $project->id) }}">تعديل<i class="las la-pen"></i></a>
-													<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$project->id}}">حذف<i class="las la-trash"></i></a>
+													<a class="modal-effect btn btn-sm btn-success" href="{{ route('donors.show', $donor->id) }}">عرض<i class="las la-pen"></i></a>
+													<a class="modal-effect btn btn-sm btn-info"  href="{{ route('donors.edit', $donor->id) }}">تعديل<i class="las la-pen"></i></a>
+													<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$donor->id}}">حذف<i class="las la-trash"></i></a>
 												</td>
 											</tr>
-											@include('projects.delete')
+											@include('donors.delete')
 										@endforeach
 									</tbody>
 								</table>

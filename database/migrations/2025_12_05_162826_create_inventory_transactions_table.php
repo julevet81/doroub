@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('inventory_transactions', function (Blueprint $table) {
             $table->id();
             $table->enum('transaction_type', ['in', 'out']);
+            $table->foreignId('project_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('donor_id')->nullable()->constrained()->onDelete('set null');
             $table->enum('orientation', ['project', 'inventory', 'other'])->default('inventory');
             $table->date('transaction_date');

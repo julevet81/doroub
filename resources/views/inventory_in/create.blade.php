@@ -38,6 +38,30 @@
 								</div>
 								<br>
 								<div class="row">
+									<div class="col">
+										<label for="orientation" class="control-label" style="font-size: x-large">التوجيه</label>
+										<select name="orientation" id="orientation" class="form-control" style="font-size: x-large" required>
+											<option value="" disabled selected>اختار التوجيه</option>
+											<option value="project">مشروع</option>
+											<option value="inventory">مخزون</option>
+										</select>
+									</div>
+									<div class="col">
+										<label for="notes" class="control-label" style="font-size: x-large">ملاحظات</label>
+										<textarea name="notes" id="notes" class="form-control" style="font-size: x-large" rows="3"></textarea>
+									</div>
+								</div>
+								<div class="col" id="project-section" style="display: none;">
+									<label for="project_id" class="control-label" style="font-size: x-large">اختر المشروع</label>
+									<select name="project_id" id="project_id" class="form-control" style="font-size: x-large">
+										<option value="">اختر المشروع</option>
+										@foreach($projects as $project)
+											<option value="{{ $project->id }}">{{ $project->name }}</option>
+										@endforeach
+									</select>
+								</div>
+								<br>
+								<div class="row">
 									<div class="col-12">
 										<label style="font-size: x-large">العناصر</label>
 
@@ -70,21 +94,8 @@
 									</div>
 								</div>
 
-								<br>
-								<div class="row">
-									<div class="col">
-										<label for="orientation" class="control-label" style="font-size: x-large">التوجيه</label>
-										<select name="orientation" id="orientation" class="form-control" style="font-size: x-large" required>
-											<option value="" disabled selected>اختار التوجيه</option>
-											<option value="project">مشروع</option>
-											<option value="inventory">مخزون</option>
-										</select>
-									</div>
-									<div class="col">
-										<label for="notes" class="control-label" style="font-size: x-large">ملاحظات</label>
-										<textarea name="notes" id="notes" class="form-control" style="font-size: x-large" rows="3"></textarea>
-									</div>
-								</div>
+
+
 								<br>
 
 								<button type="submit" class="btn btn-primary" style="font-size: x-large">حفظ البيانات</button>
@@ -101,6 +112,17 @@
 @section('js')
 	<script>
 		let index = 1;
+
+		document.getElementById('orientation').addEventListener('change', function () {
+			let projectSection = document.getElementById('project-section');
+
+			if (this.value === 'project') {
+				projectSection.style.display = 'block';
+			} else {
+				projectSection.style.display = 'none';
+				document.getElementById('project_id').value = "";
+			}
+		});
 
 		document.getElementById('add-item').addEventListener('click', function () {
 			let container = document.getElementById('items-container');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AssistanceItem;
 use App\Models\Donor;
 use App\Models\InventoryTransaction;
+use App\Models\Project;
 use App\Models\TransactionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,8 @@ class InventoryTransactionController extends Controller
     {
         $donors = Donor::all();
         $assistance_items = AssistanceItem::all();
-        return view('inventory_in.create', compact('donors', 'assistance_items'));
+        $projects = Project::all();
+        return view('inventory_in.create', compact('donors', 'assistance_items', 'projects'));
     }
 
     /**

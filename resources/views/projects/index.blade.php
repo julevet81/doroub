@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-	projects
+	المشاريع
 
 @endsection
 @section('css')

@@ -31,4 +31,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectVolunteer::class);
     }
+
+    public function transaction()
+    {
+        return $this->hasOne(InventoryTransaction::class);
+    }
 }

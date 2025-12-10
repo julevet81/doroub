@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssistanceCategory;
 use App\Models\Donor;
 use Illuminate\Http\Request;
 
@@ -19,17 +20,15 @@ class DonorController extends Controller
      */
     public function create()
     {
-        return view('donors.create');
+        $assistanceCategories = AssistanceCategory::all();
+        return view('donors.create', compact('assistanceCategories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'full_name' => 'required|string|max:255',
-            'activity' => 'nullable|string|max:255',
+            'activity' => 'required|string|unique:donors,activity',
             'phone' => 'nullable|string|max:20',
             'assistance_category_id' => 'required|exists:assistance_categories,id',
             'description' => 'nullable|string',
@@ -37,33 +36,26 @@ class DonorController extends Controller
 
         Donor::create($request->all());
 
-        return redirect()->route('donors.index');
+        return redirect()->route('donors.index')->with('success', 'تم إضافة المتبرع بنجاح');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Donor $donor)
     {
         return view('donors.show', compact('donor'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Donor $donor)
     {
-        return view('donors.edit', compact('donor'));
+        $assistanceCategories = AssistanceCategory::all();
+        return view('donors.edit', compact('donor', 'assistanceCategories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Donor $donor)
     {
         $request->validate([
             'full_name' => 'required|string|max:255',
-            'activity' => 'nullable|string|max:255',
+            'activity' => 'required|string|unique:donors,activity,' . $donor->id,
             'phone' => 'nullable|string|max:20',
             'assistance_category_id' => 'required|exists:assistance_categories,id',
             'description' => 'nullable|string',
@@ -71,8 +63,9 @@ class DonorController extends Controller
 
         $donor->update($request->all());
 
-        return redirect()->route('donors.index');
+        return redirect()->route('donors.index')->with('success', 'تم تحديث بيانات المتبرع بنجاح');
     }
+
 
     /**
      * Remove the specified resource from storage.

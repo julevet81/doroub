@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('beneficiaries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('beneficiary_category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('beneficiary_category_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('full_name');
             $table->date('date_of_birth');
-            $table->string('place_of_birth');
+            $table->string('place_of_birth')->nullable();
             $table->string('address')->nullable();
             $table->string('phone_1')->nullable();
             $table->string('phone_2')->nullable();
             $table->enum('social_status', ['maried', 'single', 'divorced', 'widowed'])->default('single');
             $table->enum('gender', ['male', 'female']);
-            $table->integer('nbr_in_family');
+            $table->integer('nbr_in_family')->nullable();
             $table->foreignId('partner_id')->nullable()->constrained('partner_infos')->onDelete('cascade');
             $table->integer('nbr_studing')->default(0);
             $table->string('job')->nullable();
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('neighborhood')->nullable();
             $table->enum('house_status', ['owned', 'rented', 'family'])->default('owned');
-            $table->string('national_id')->unique();
+            $table->string('national_id')->nullable()->unique();
             $table->string('national_id_at')->nullable();
             $table->string('national_id_from')->nullable();
             $table->string('father_name')->nullable();

@@ -34,7 +34,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('projects.index');
+    return view('dashboard.users.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard.index');
 
 Route::get('/test', [TestController::class, 'index'])->middleware(['auth', 'verified'])->name('test');

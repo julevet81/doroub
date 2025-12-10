@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.master')
 @section('title')
-    project Details
+    تفاصيل العنصر
 @endsection
 @section('css')
 @endsection
@@ -9,7 +9,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">project Details</h4>
+							<h4 class="content-title mb-0 my-auto" style="font-size: x-large">تفاصيل العنصر</h4>
 						</div>
 					</div>
 					
@@ -19,21 +19,23 @@
 @section('content')
 	<div class="container">
     <div>
-		<h2>project Details</h2>
+		<h2>
+            تفاصيل العنصر
+        </h2>
 	</div>
 
 	<table class="table table-bordered">
         <thead>
             <tr>
-                <th>Field</th>
-                <th>Value</th>
+                <th style="font-size: large">المفتاح</th>
+                <th style="font-size: large">القيمة</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($assistanceItem as $key => $value)
+            @foreach($assistance_item as $key => $value)
                 <tr>
-                    <td>{{ ucfirst(str_replace('_', ' ', $key)) }}</td>
-                    <td>{{ $value }}</td>
+                    <td style="font-size: large">{{ ucfirst(str_replace('_', ' ', $key)) }}</td>
+                    <td style="font-size: large">{{ $value }}</td>
                 </tr>
             @endforeach
         </tbody>
