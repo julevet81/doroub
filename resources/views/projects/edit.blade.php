@@ -6,223 +6,222 @@
 @endsection
 
 @section('content')
+  <!-- row -->
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div class="card" style="font-size: x-large">
+        <div class="card-body">
 
-  <div class="container">
-      <h2>Edit project</h2>
-      <div>
-          {{-- Show Success Message --}}
-          @if(session('success'))
-            <div class="alert alert-success">
-              {{ session('success') }}
+          <form action="{{ route('projects.update', $project->id) }}" method="post" enctype="multipart/form-data"
+            autocomplete="off">
+            @csrf
+            @method('PUT')
+
+             <div class="card mb-4 p-3">
+            <h4>بيانات المشروع</h4>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label>اسم المشروع</label>
+                    <input type="text" name="name" class="form-control" value="{{ $project->name }}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label>نوع المشروع</label>
+                    <input type="text" name="type" class="form-control" value="{{ $project->type }}" required>
+                </div>
+
+                <div class="col-md-4 mt-3">
+                    <label>تاريخ البدء</label>
+                    <input type="date" name="start_date" class="form-control" value="{{ $project->start_date }}" required>
+                </div>
+
+                <div class="col-md-4 mt-3">
+                    <label>تاريخ الانتهاء</label>
+                    <input type="date" name="end_date" class="form-control" value="{{ $project->end_date }}">
+                </div>
+
+                <div class="col-md-4 mt-3">
+                    <label>المبلغ</label>
+                    <input type="number" name="amount" class="form-control" value="{{ $project->amount }}">
+                </div>
+
+                <div class="col-md-4 mt-3">
+                    <label>الحالة</label>
+                    <select name="status" class="form-control" required>
+                        <option value="planned" {{ $project->status == 'planned' ? 'selected' : '' }}>مخطط</option>
+                        <option value="in_progress" {{ $project->status == 'in_progress' ? 'selected' : '' }}>قيد التنفيذ</option>
+                        <option value="completed" {{ $project->status == 'completed' ? 'selected' : '' }}>مكتمل</option>
+                        <option value="rejected" {{ $project->status == 'rejected' ? 'selected' : '' }}>مرفوض</option>
+                    </select>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <label>ملاحظات</label>
+                    <textarea name="notes" class="form-control">{{ $project->notes }}</textarea>
+                </div>
             </div>
-          @endif
-          @if($errors->any())
-            <div class="alert alert-danger">
-              <ul>
-                @foreach($errors->all() as $error)
-                  <li>{{ $error }}</li>
-                @endforeach
-              </ul>
-            </div>
-          @endif
-      </div>
-
-      <form action="{{ route('projects.update', $project->id) }}" method="POST">
-          @csrf
-          @method('PUT')
-
-          {{-- project Name --}}
-          <div class="mb-3">
-              <label for="name" class="form-label">project Name</label>
-              <input type="text" name="name" id="name"
-                     value="{{ old('name', $project->name) }}"
-                     class="form-control" required>
-          </div>
-          {{-- Owner --}}
-          <div class="mb-3">
-            <label>Owner</label>
-            <select name="owner_id" id="owner_id" class="form-control" required>
-                <option value="">-- Select Owner --</option>
-                @foreach($owners as $owner)
-                    <option value="{{ $owner->id }}" {{ $project->owner_id == $owner->id ? 'selected' : '' }}>
-                        {{ $owner->name }}
-                    </option>
-                @endforeach
-            </select>
-            <span id="owner-warning" class="text-warning"></span>
-          </div>
-
-
-          {{-- Device --}}
-          <div class="mb-3">
-            <label>Device</label>
-            <select name="device_id" id="device_id" class="form-control" required>
-                <option value="">-- Select Device --</option>
-                @foreach($devices as $device)
-                    <option value="{{ $device->id }}" {{ $project->device_id == $device->id ? 'selected' : '' }}>
-                        {{ $device->name }}
-                    </option>
-                @endforeach
-            </select>
-            <span id="device-warning" class="text-warning"></span>
         </div>
-          
 
-          {{-- Email --}}
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
-          {{-- Phone --}}
-          <div class="mb-3">
-            <label>Phone</label>
-            <select name="phone_id" class="form-control" required>
-                <option value="">-- Select Phone --</option>
-                @foreach($phones as $phone)
-                    <option value="{{ $phone->id }}" {{ $project->phone_id == $phone->id ? 'selected' : '' }}>
-                        {{ $phone->number }}
-                    </option>
+        <!-- عناصر المساعدة -->
+        <div class="card p-3 mb-4">
+            <h4>عناصر المساعدة</h4>
+
+            <div id="items-container">
+
+                @foreach($projectItems as $index => $item)
+                  <div class="row item-row mt-2 border p-2 rounded">
+
+                    <div class="col-md-5">
+                        <label>اسم العنصر</label>
+                        <select name="items[{{ $index }}][item_id]" class="form-control" onchange="updateStock(this, {{ $index }})">
+                            @foreach($assistanceItems as $ai)
+                                <option value="{{ $ai->id }}"
+                                    data-stock="{{ $ai->quantity_in_stock }}"
+                                    {{ $ai->id == $item->id ? 'selected' : '' }}>
+                                    {{ $ai->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>الكمية</label>
+                        <input type="number" name="items[{{ $index }}][quantity]" class="form-control" value="{{ $item->pivot->quantity }}" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>المتبقي في المخزن</label>
+                        <input type="text" id="stock-{{ $index }}" class="form-control"
+                            value="{{ $item->quantity_in_stock }}" disabled>
+                    </div>
+
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">X</button>
+                    </div>
+                  </div>
                 @endforeach
-            </select>
-            <span id="phone-warning" class="text-warning"></span>
-          </div>
 
-          {{-- Credit Card Section --}}
-          <div class="mb-3">
-            <label>Credit Card</label>
-            <select name="credit_card_id" id="credit_card_id" class="form-control" required>
-                <option value="">-- Select Card --</option>
-                @foreach($creditCards as $card)
-                    <option value="{{ $card->id }}" {{ $project->credit_card_id == $card->id ? 'selected' : '' }}>
-                        {{ $card->number }}
-                    </option>
+            </div>
+
+            <button type="button" class="btn btn-primary mt-3" onclick="addItem()">إضافة عنصر جديد</button>
+        </div>
+
+        <!-- المتطوعين -->
+        <div class="card p-3 mb-4">
+            <h4>فريق المتطوعين</h4>
+
+            <div id="volunteers-container">
+                @foreach($projectVolunteers as $index => $vol)
+                <div class="row vol-row mt-2 border p-2 rounded">
+
+                    <div class="col-md-5">
+                        <label>المتطوع</label>
+                        <select name="volunteers[{{ $index }}][id]" class="form-control">
+                            @foreach($volunteers as $v)
+                                <option value="{{ $v->id }}" {{ $v->id == $vol->id ? 'selected' : '' }}>
+                                    {{ $v->full_name }} ({{ $v->membership_id }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <label>المنصب</label>
+                        <input type="text" name="volunteers[{{ $index }}][position]" class="form-control"
+                            value="{{ $vol->pivot->position }}">
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">X</button>
+                    </div>
+
+                </div>
                 @endforeach
-            </select>
-              <span id="credit-warning" class="text-warning"></span>
-          </div>
-          {{-- Network --}}
-          <div class="mb-3">
-            <label>Network</label>
-            <select name="network_id" id="network_id" class="form-control" required>
-                <option value="">-- Select Network --</option>
-                @foreach($networks as $network)
-                    <option value="{{ $network->id }}" {{ $project->network_id == $network->id ? 'selected' : '' }}>
-                        {{ $network->name }}
-                    </option>
-                @endforeach
-            </select>
-              <span id="network-warning" class="text-warning"></span>
-         </div>
-          {{-- Status --}}
-          <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select name="status" id="status" class="form-control" required>
-                <option value="new" {{ $project->status == 'new' ? 'selected' : '' }}>New</option>
-                <option value="verified" {{ $project->status == 'verified' ? 'selected' : '' }}>Verified</option>
-                <option value="ready" {{ $project->status == 'ready' ? 'selected' : '' }}>Ready</option>
-            </select>
-          </div>
-          
-          {{-- Publication Price --}}
-          <div class="mb-3">
-            <label for="publication_price" class="form-label">Publication Price</label>
-            <input type="number" class="form-control" id="publication_price" name="publication_price" 
-            value="{{ old('publication_price', $project->publication_price) }}">
-          </div>
+            </div>
 
-          {{-- Weekly Price --}}
-          <div class="mb-3">
-            <label for="weekly_price" class="form-label">weekly_price</label>
-            <input type="number" class="form-control" id="weekly_price" name="weekly_price"
-            value="{{ old('weekly_price', $project->weekly_price) }}">
-          </div>
-
-          {{-- Update Price --}}
-          <div class="mb-3">
-            <label for="update_price" class="form-label">Update Price</label>
-            <input type="number" class="form-control" id="update_price" name="update_price"
-            value="{{ old('update_price', $project->update_price) }}">
-          </div>
-
-          {{-- Upload Price --}}
-          <div class="mb-3">
-            <label for="upload_price" class="form-label">Upload Price</label>
-            <input type="number" class="form-control" id="upload_price" name="upload_price"
-            value="{{ old('upload_price', $project->upload_price) }}">
-          </div>
-
-          {{-- Purchase Price --}}
-          <div class="mb-3">
-            <label for="price" class="form-label">Purchase Price</label>
-            <input type="number" class="form-control" id="price" name="price"
-            value="{{ old('price', $project->price) }}">
-          </div>
-
-          {{-- Open Date --}}
-          <div class="mb-3">
-            <label for="open_date" class="form-label">Open Date</label>
-            <input type="date" class="form-control" id="open_date" name="open_date"
-            value="{{ old('open_date', $project->open_date ? $project->open_date->format('Y-m-d') : '') }}">
-          </div>
-
-          {{-- Activation Date --}}
-          <div class="mb-3">
-            <label for="activation_date" class="form-label">Activation Date</label>
-            <input type="date" class="form-control" id="activation_date" name="activation_date"
-            value="{{ old('activation_date', $project->activation_date ? $project->activation_date->format('Y-m-d') : '') }}">
-          </div>
+            <button type="button" class="btn btn-success mt-3" onclick="addVolunteer()">إضافة متطوع جديد</button>
+        </div>
 
 
+            <br>
 
-          {{-- Submit --}}
-          <button type="submit" class="btn btn-primary">Update project</button>
-      </form>
+            <button type="submit" class="btn btn-primary" style="font-size: x-large">تحديث البيانات</button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
   </div>
 @endsection
-@section('scripts')
+
+@section('js')
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    let items = @json($assistanceItems);
+    let volunteersList = @json($volunteers);
 
-      function checkAssignment(type, id, warningId) {
-        if (!id) {
-          document.getElementById(warningId).innerText = '';
-          return;
-        }
+    function addItem() {
+      let index = document.querySelectorAll('.item-row').length;
 
-        fetch("{{ url('check-assignment') }}/" + type + "/" + id)
-          .then(res => res.json())
-          .then(data => {
-            if (data.assigned) {
-              document.getElementById(warningId).innerText = `⚠️ This ${type} is already assigned to another project.`;
-            } else {
-              document.getElementById(warningId).innerText = '';
-            }
-          })
-          .catch(err => console.error(err));
-      }
+      let html = `
+          <div class="row item-row mt-2 border p-2 rounded">
+              <div class="col-md-5">
+                  <label>اسم العنصر</label>
+                  <select name="items[${index}][item_id]" class="form-control" onchange="updateStock(this, ${index})">
+                      <option value="">اختر</option>
+                      ${items.map(i => `<option value="${i.id}" data-stock="${i.quantity_in_stock}">${i.name}</option>`).join('')}
+                  </select>
+              </div>
 
-      document.getElementById('owner_id').addEventListener('change', function () {
-        checkAssignment('owner', this.value, 'owner-warning');
-      });
+              <div class="col-md-3">
+                  <label>الكمية</label>
+                  <input type="number" name="items[${index}][quantity]" class="form-control" required>
+              </div>
 
-      document.getElementById('phone_id').addEventListener('change', function () {
-        checkAssignment('phone', this.value, 'phone-warning');
-      });
+              <div class="col-md-3">
+                  <label>المتبقي في المخزن</label>
+                  <input type="text" id="stock-${index}" class="form-control" disabled>
+              </div>
 
-      document.getElementById('device_id').addEventListener('change', function () {
-        checkAssignment('device', this.value, 'device-warning');
-      });
+              <div class="col-md-1 d-flex align-items-end">
+                  <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">X</button>
+              </div>
+          </div>
+      `;
 
-      document.getElementById('credit_card_id').addEventListener('change', function () {
-        checkAssignment('credit_card', this.value, 'credit-warning');
-      });
+      document.getElementById('items-container').insertAdjacentHTML('beforeend', html);
+    }
 
-      document.getElementById('network_id').addEventListener('change', function () {
-        checkAssignment('network', this.value, 'network-warning');
-      });
+    function updateStock(select, index) {
+      let stock = select.options[select.selectedIndex].dataset.stock;
+      document.getElementById('stock-' + index).value = stock;
+    }
 
-    });
+    function addVolunteer() {
+      let index = document.querySelectorAll('.vol-row').length;
+
+      let html = `
+          <div class="row vol-row mt-2 border p-2 rounded">
+              <div class="col-md-5">
+                  <label>اسم المتطوع</label>
+                  <select name="volunteers[${index}][id]" class="form-control">
+                      ${volunteersList.map(v => `<option value="${v.id}">${v.full_name} (${v.membership_id})</option>`).join('')}
+                  </select>
+              </div>
+
+              <div class="col-md-5">
+                  <label>المنصب</label>
+                  <input type="text" name="volunteers[${index}][position]" class="form-control">
+              </div>
+
+              <div class="col-md-2 d-flex align-items-end">
+                  <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">X</button>
+              </div>
+          </div>`;
+
+      document.getElementById('volunteers-container').insertAdjacentHTML('beforeend', html);
+    }
   </script>
-
 
 @endsection

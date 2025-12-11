@@ -121,4 +121,9 @@ class VolunteerController extends Controller
         $volunteer->delete();
         return redirect()->route('volunteers.index')->with('success', 'تم حذف المتطوع بنجاح.');
     }
+
+    public function statistics()
+    {
+        return view('volunteers.statistics');
+    }
 }

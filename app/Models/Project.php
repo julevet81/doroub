@@ -21,7 +21,19 @@ class Project extends Model
         'description',
     ];
 
-    
+    public function assistances()
+    {
+        return $this->belongsToMany(AssistanceItem::class, 'project_assistances')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
+    public function volunteers()
+    {
+        return $this->belongsToMany(Volunteer::class, 'project_volunteers')
+            ->withPivot('position')
+            ->withTimestamps();
+    }
     public function projectAssistances()
     {
         return $this->hasMany(ProjectAssistance::class);

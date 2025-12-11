@@ -99,4 +99,8 @@ class FinancialTransactionController extends Controller
         $financialTransaction->delete();
         return redirect()->route('financial_transactions.index')->with('success', 'تم حذف المعاملة المالية بنجاح.');
     }
+
+    public function statistics(){
+        return view('financial_transactions.statistics');
+    }
 }

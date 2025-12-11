@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AssistanceItem;
 use App\Models\Project;
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -17,73 +18,160 @@ class ProjectController extends Controller
         return view('projects.index', compact('projects'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $items = AssistanceItem::all();
-        return view('projects.create', compact('items'));
+        $assistanceItems = AssistanceItem::all();
+        $volunteers = Volunteer::all();
+
+        return view('projects.create', compact('assistanceItems', 'volunteers'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'budget' => 'required|numeric',
+            'type' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|string|max:50',
-            'location' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'amount' => 'nullable|numeric',
+            'status' => 'required|string',
+            'notes' => 'nullable|string',
+
+            'items.*.item_id' => 'required|exists:assistance_items,id',
+            'items.*.quantity' => 'required|integer|min:1',
+
+            'volunteers.*.id' => 'required|exists:volunteers,id',
+            'volunteers.*.position' => 'nullable|string|max:255',
         ]);
 
-        Project::create($validatedData);
+        $project = Project::create([
+            'name' => $request->name,
+            'type' => $request->type,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'amount' => $request->amount,
+            'status' => $request->status,
+            'notes' => $request->notes,
+        ]);
 
-        return redirect()->route('projects.index')->with('success', 'تم إنشاء المشروع بنجاح.');
+        foreach ($request->items as $item) {
+            $project->assistances()->attach($item['item_id'], [
+                'quantity' => $item['quantity']
+            ]);
+
+            AssistanceItem::where('id', $item['item_id'])
+                ->decrement('quantity_in_stock', $item['quantity']);
+        }
+
+        
+        foreach ($request->volunteers as $vol) {
+            $project->volunteers()->attach($vol['id'], [
+                'position' => $vol['position']
+            ]);
+        }
+
+        return redirect()->route('projects.index')->with('success', 'تم إنشاء المشروع بنجاح');
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Project $project)
     {
-        $projectData = $project->toArray();
+        $projectData = [
+            'الإسم' => $project->name,
+            'النوع' => $project->type,
+            'المبلغ' => $project->budget,
+            'تاريخ الدء' => $project->start_date,
+            'تاريخ الانتهاء' => $project->end_date,
+            'الحالة' => $project->status,
+            'الموقع' => $project->location,
+            'التفاصيل' => $project->description,
+        ];
         return view('projects.show', compact('projectData'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Project $project)
     {
-        return view('projects.edit', compact('project'));
+        $assistanceItems = AssistanceItem::all();
+        $volunteers = Volunteer::all();
+
+        // جلب عناصر المشروع
+        $projectItems = $project->assistances()->get();
+
+        // جلب متطوعي المشروع
+        $projectVolunteers = $project->volunteers()->get();
+
+        return view('projects.edit', compact(
+            'project',
+            'assistanceItems',
+            'volunteers',
+            'projectItems',
+            'projectVolunteers'
+        ));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Project $project)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'budget' => 'required|numeric',
+            'type' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|string|max:50',
-            'location' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'amount' => 'nullable|numeric',
+            'status' => 'required|string',
+            'notes' => 'nullable|string',
+
+            'items.*.item_id' => 'required|exists:assistance_items,id',
+            'items.*.quantity' => 'required|integer|min:1',
+
+            'volunteers.*.id' => 'required|exists:volunteers,id',
+            'volunteers.*.position' => 'nullable',
         ]);
 
-        $project->update($validatedData);
+        
+        foreach ($project->assistances as $old) {
+            AssistanceItem::where('id', $old->id)
+                ->increment('quantity_in_stock', $old->pivot->quantity);
+        }
 
-        return redirect()->route('projects.index')->with('success', 'تم تحديث المشروع بنجاح.');
+        
+        $project->update([
+            'name' => $request->name,
+            'type' => $request->type,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'amount' => $request->amount,
+            'status' => $request->status,
+            'notes' => $request->notes,
+        ]);
+
+    
+        $project->assistances()->detach();
+        $project->volunteers()->detach();
+
+
+        foreach ($request->items as $item) {
+            $project->assistances()->attach($item['item_id'], [
+                'quantity' => $item['quantity']
+            ]);
+
+            AssistanceItem::where('id', $item['item_id'])
+                ->decrement('quantity_in_stock', $item['quantity']);
+        }
+
+        
+        foreach ($request->volunteers as $vol) {
+            $project->volunteers()->attach($vol['id'], [
+                'position' => $vol['position']
+            ]);
+        }
+
+        return redirect()->route('projects.index')->with('success', 'تم تحديث المشروع بنجاح');
     }
+
 
     /**
      * Remove the specified resource from storage.

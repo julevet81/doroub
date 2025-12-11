@@ -27,8 +27,9 @@ class AssistanceItem extends Model
                     ->withTimestamps();
     }
 
-    public function projectAssistances()
+    public function projects()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->belongsToMany(Project::class, 'project_assistances')
+            ->withPivot('quantity');
     }
 }

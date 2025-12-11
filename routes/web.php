@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
 
     ######################## Volunteers Routes #########################
-
+    Route::get('volunteers/statistics', [VolunteerController::class, 'statistics'])->name('volunteers.statistics');
     Route::resource('volunteers', VolunteerController::class);
 
     ######################## Assistance Categories Routes #########################
@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('beneficiary_categories', BeneficiaryCategoryController::class);
 
     ##################### Beneficiaries Routes #########################
+    Route::get('beneficiaries/statistics', [BeneficiaryController::class, 'statistics'])->name('beneficiaries.statistics');
     Route::get('/get-municipalities/{district_id}', [BeneficiaryController::class, 'getMunicipalities']);
     Route::resource('beneficiaries', BeneficiaryController::class);
     
@@ -81,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('children', ChildController::class);
 
     ##################### Financial Transactions Routes #########################
+    route::get('financial_transactions/statistics', [FinancialTransactionController::class, 'statistics'])->name('financial.statistics');
     Route::resource('financial_transactions', FinancialTransactionController::class);
 
     ##################### Expenses Routes #########################

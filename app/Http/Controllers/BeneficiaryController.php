@@ -194,4 +194,9 @@ class BeneficiaryController extends Controller
     {
         return Municipality::where('district_id', $district_id)->get();
     }
+
+    public function statistics()
+    {
+        return view('beneficiaries.statistics');
+    }
 }
