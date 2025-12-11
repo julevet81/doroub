@@ -38,7 +38,7 @@
 						<ul class="slide-menu">
 							<li><a class="slide-item" style="font-size: 20px; font-weight: 200;" href="{{ route('expenses.index') }}">النفقات</a></li>
 							<li><a class="slide-item" style="font-size: 20px; font-weight: 200;" href="{{ route('financial_transactions.index') }}">الإيرادات</a></li>
-							<li><a class="slide-item" style="font-size: 20px; font-weight: 200;" href="{{ route('financial.statistics') }}">الإحصائيات</a></li>
+							<li><a class="slide-item" style="font-size: 20px; font-weight: 200;" href="{{ route('financial.report') }}">الإحصائيات</a></li>
 						</ul>
 					</li>
 					<li class="slide">

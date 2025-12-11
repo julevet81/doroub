@@ -103,4 +103,72 @@ class FinancialTransactionController extends Controller
     public function statistics(){
         return view('financial_transactions.statistics');
     }
+
+    public function report(Request $request)
+    {
+        if (!$request->start_date || !$request->end_date) {
+            return view('financial_transactions.report');
+        }
+
+        $start = $request->start_date;
+        $end   = $request->end_date;
+
+        $transactions = FinancialTransaction::whereBetween('transaction_date', [$start, $end])->get();
+
+        $totalIncome = $transactions
+            ->where('transaction_type', 'income')
+            ->sum('amount');
+
+        $totalExpense = $transactions
+            ->where('transaction_type', 'expense')
+            ->sum('amount');
+
+        $balance = $totalIncome - $totalExpense;
+
+        $projectTransfers = $transactions
+            ->where('orientation', 'project')
+            ->groupBy('project_id')
+            ->map(function ($item) {
+                return $item->sum('amount');
+            });
+
+        return view('financial_transactions.report', compact(
+            'transactions',
+            'totalIncome',
+            'totalExpense',
+            'balance',
+            'projectTransfers',
+            'start',
+            'end'
+        ));
+    }
+
+    public function print(Request $request)
+    {
+        $start = $request->start_date;
+        $end   = $request->end_date;
+
+        $transactions = FinancialTransaction::whereBetween('transaction_date', [$start, $end])->get();
+
+        $totalIncome = $transactions->where('transaction_type', 'income')->sum('amount');
+        $totalExpense = $transactions->where('transaction_type', 'expense')->sum('amount');
+        $balance = $totalIncome - $totalExpense;
+
+        $projectTransfers = $transactions
+            ->where('orientation', 'project')
+            ->groupBy('project_id')
+            ->map(fn($t) => $t->sum('amount'));
+
+        return view('financial_transactions.print', compact(
+            'transactions',
+            'totalIncome',
+            'totalExpense',
+            'balance',
+            'projectTransfers',
+            'start',
+            'end'
+        ));
+    }
+
 }
+

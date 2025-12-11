@@ -26,7 +26,7 @@
 			<!-- row -->
 			<div class="row row-sm">
 				<!--div-->
-				<div class="col-xl-12">
+				<div class="col-xl-12" style="font-size: x-large;">
 					<div class="card mg-b-20">
 						<div class="card-header pb-0">
 							<div class="d-flex justify-content-between">

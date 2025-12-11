@@ -82,6 +82,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('children', ChildController::class);
 
     ##################### Financial Transactions Routes #########################
+    
+    Route::get('/financial-report', [FinancialTransactionController::class, 'report'])->name('financial.report');
+    Route::get('/financial-report/print', [FinancialTransactionController::class, 'print'])->name('financial.report.print');
+
     route::get('financial_transactions/statistics', [FinancialTransactionController::class, 'statistics'])->name('financial.statistics');
     Route::resource('financial_transactions', FinancialTransactionController::class);
 
