@@ -30,16 +30,21 @@ use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('dashboard.users.signin');
+    return view('landing.index');
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard.users.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard.index');
 
+Route::get('/dashboar', function () {
+    return view('dashboard.users.dashboard');
+    })->middleware('auth', 'verified')->name('dashboard.index');
+
 Route::get('/test', [TestController::class, 'index'])->middleware(['auth', 'verified'])->name('test');
 
 Route::middleware('auth')->group(function () {
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -115,11 +120,15 @@ Route::middleware('auth')->group(function () {
         ->name('devices.destructed');
     Route::put('/devices/{device}/destruct', [DeviceController::class, 'destruct'])
         ->name('devices.destruct');
-    Route::get('/devices/{device}/print-form', [DeviceController::class, 'printForm'])
-        ->name('devices.printForm');
+    Route::get('/devices/{device}/destruction/edit', [DeviceController::class, 'editDestruction'])
+        ->name('devices.destruction.edit');
 
-    Route::post('/devices/{device}/print', [DeviceController::class, 'print'])
-        ->name('devices.print');
+    Route::post('/devices/{device}/destruction/update', [DeviceController::class, 'updateDestruction'])
+        ->name('devices.destruction.update');
+
+    Route::get('/devices/{device}/destruction/print', [DeviceController::class, 'printDestruction'])
+        ->name('devices.destruction.print');
+
 
     Route::resource('devices', DeviceController::class);
     

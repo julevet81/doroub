@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             PermissionSeeder::class,
+            DistrictSeeder::class,
+            MunicipalitySeeder::class,
             ProjectSeeder::class,
             DeviceSeeder::class,
             AssistanceItemSeeder::class,

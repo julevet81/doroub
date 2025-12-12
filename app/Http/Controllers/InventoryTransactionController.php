@@ -69,6 +69,7 @@ class InventoryTransactionController extends Controller
      */
     public function show(InventoryTransaction $inventoryTransaction)
     {
+        
         return view('inventory_in.show', compact('inventoryTransaction'));
     }
 

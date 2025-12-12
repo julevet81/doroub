@@ -55,6 +55,7 @@ class AssistanceItemController extends Controller
         $assistance_item = [
             'الاسم' => $assistance_item->name,
             'الكود' => $assistance_item->code,
+            'الكمية' => $assistance_item->quantity_in_stock,
         ];
         return view('assistance_items.show', compact('assistance_item'));
     }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('dashboard.layouts.master')
 
 @section('content')
 
@@ -21,7 +21,7 @@
 
             <div class="mb-3">
                 <label>الباركود</label>
-                <input type="text" name="barcode" class="form-control" value="{{ $device->barcode }}">
+                <input type="text" name="barcode" class="form-control" value="{{ $device->usage_count }}">
             </div>
 
             <div class="mb-3">

@@ -13,7 +13,8 @@ class Device extends Model
         'status',
         'is_destructed',
         'destruction_report',
-        'destruction_reason',  
+        'destruction_reason',
+        'destruction_date', 
         'barcode',
         'is_new',
     ];

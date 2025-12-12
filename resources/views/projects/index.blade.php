@@ -7,9 +7,9 @@
 @section('css')
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
+	<link href="{{URL::asset('dashboard/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
 	<!-- Maps css -->
-	<link href="{{URL::asset('assets/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
+	<link href="{{URL::asset('dashboard/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
 
 @endsection
 @section('page-header')
@@ -205,36 +205,36 @@
 @section('js')
 	<script src="{{URL::asset('dashboard/plugins/notify/js/notifIt.js')}}"></script>
 	<script src="{{URL::asset('dashboard/plugins/notify/js/notifit-custom.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/raphael/raphael.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.pie.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.resize.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.categories.js')}}"></script>
-	<script src="{{URL::asset('assets/js/dashboard.sampledata.js')}}"></script>
-	<script src="{{URL::asset('assets/js/chart.flot.sampledata.js')}}"></script>
-	<script src="{{URL::asset('assets/js/apexcharts.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
-	<script src="{{URL::asset('assets/js/modal-popup.js')}}"></script>
-	<script src="{{URL::asset('assets/js/index.js')}}"></script>
-	<script src="{{URL::asset('assets/js/jquery.vmap.sampledata.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.buttons.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/jszip.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/pdfmake.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/vfs_fonts.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.html5.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.print.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js')}}"></script>
-	<script src="{{URL::asset('assets/js/table-data.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/chart.js/Chart.bundle.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/raphael/raphael.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.pie.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.resize.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.categories.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/dashboard.sampledata.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/chart.flot.sampledata.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/apexcharts.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/modal-popup.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/index.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/jquery.vmap.sampledata.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.dataTables.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/responsive.dataTables.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/jquery.dataTables.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.buttons.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.bootstrap4.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/jszip.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/pdfmake.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/vfs_fonts.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.html5.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.print.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.colVis.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/responsive.bootstrap4.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/table-data.js')}}"></script>
 
 @endsection

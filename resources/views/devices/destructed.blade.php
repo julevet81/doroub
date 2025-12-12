@@ -67,10 +67,9 @@
 												<td>
 													<a class="modal-effect btn btn-sm btn-success" href="{{ route('devices.show', $device->id) }}">عرض<i class="las la-pen"></i></a>
 													<a class="modal-effect btn btn-sm btn-info"  href="{{ route('devices.edit', $device->id) }}">تعديل<i class="las la-pen"></i></a>
-													<a href="{{ route('devices.printForm', $device->id) }}" class="btn btn-secondary btn-sm">
-														<i class="fa fa-print"></i> إعداد محضر الإتلاف
+													<a href="{{ route('devices.destruction.edit', $device->id) }}" class="btn btn-sm btn-primary">
+														تعديل تقرير الإتلاف
 													</a>
-
 
 													<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$device->id}}">حذف<i class="las la-trash"></i></a>
 												</td>
@@ -88,24 +87,24 @@
 	<!-- Container closed -->
 @endsection
 @section('js')
-	<script src="{{URL::asset('assets/plugins/notify/js/notifIt.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/notify/js/notifit-custom.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.buttons.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/jszip.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/pdfmake.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/vfs_fonts.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.html5.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.print.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
-	<script src="{{URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js')}}"></script>
-	<script src="{{URL::asset('assets/js/table-data.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/notify/js/notifIt.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/notify/js/notifit-custom.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.dataTables.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/responsive.dataTables.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/jquery.dataTables.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.buttons.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.bootstrap4.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/jszip.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/pdfmake.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/vfs_fonts.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.html5.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.print.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/buttons.colVis.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/plugins/datatable/js/responsive.bootstrap4.min.js')}}"></script>
+	<script src="{{URL::asset('dashboard/js/table-data.js')}}"></script>
 
 @endsection

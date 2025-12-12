@@ -1,9 +1,9 @@
 @extends('dashboard.layouts.master')
 @section('css')
 <!--  Owl-carousel css-->
-<link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
+<link href="{{URL::asset('dashboard/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
 <!-- Maps css -->
-<link href="{{URL::asset('assets/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
+<link href="{{URL::asset('dashboard/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
 @endsection
 @section('page-header')
 				<!-- breadcrumb -->
@@ -169,7 +169,7 @@
 							<div class="list-group list-lg-group list-group-flush">
 								<div class="list-group-item list-group-item-action" href="#">
 									<div class="media mt-0">
-										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('assets/img/faces/3.jpg')}}" alt="Image description">
+										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('dashboard/img/faces/3.jpg')}}" alt="Image description">
 										<div class="media-body">
 											<div class="d-flex align-items-center">
 												<div class="mt-0">
@@ -185,7 +185,7 @@
 								</div>
 								<div class="list-group-item list-group-item-action" href="#">
 									<div class="media mt-0">
-										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('assets/img/faces/11.jpg')}}" alt="Image description">
+										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('dashboard/img/faces/11.jpg')}}" alt="Image description">
 										<div class="media-body">
 											<div class="d-flex align-items-center">
 												<div class="mt-1">
@@ -201,7 +201,7 @@
 								</div>
 								<div class="list-group-item list-group-item-action" href="#">
 									<div class="media mt-0">
-										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('assets/img/faces/17.jpg')}}" alt="Image description">
+										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('dashboard/img/faces/17.jpg')}}" alt="Image description">
 										<div class="media-body">
 											<div class="d-flex align-items-center">
 												<div class="mt-1">
@@ -217,7 +217,7 @@
 								</div>
 								<div class="list-group-item list-group-item-action" href="#">
 									<div class="media mt-0">
-										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('assets/img/faces/15.jpg')}}" alt="Image description">
+										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('dashboard/img/faces/15.jpg')}}" alt="Image description">
 										<div class="media-body">
 											<div class="d-flex align-items-center">
 												<div class="mt-1">
@@ -233,7 +233,7 @@
 								</div>
 								<div class="list-group-item list-group-item-action br-br-7 br-bl-7" href="#">
 									<div class="media mt-0">
-										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('assets/img/faces/6.jpg')}}" alt="Image description">
+										<img class="avatar-lg rounded-circle ml-3 my-auto" src="{{URL::asset('dashboard/img/faces/6.jpg')}}" alt="Image description">
 										<div class="media-body">
 											<div class="d-flex align-items-center">
 												<div class="mt-1">
@@ -429,23 +429,23 @@
 @endsection
 @section('js')
 <!--Internal  Chart.bundle js -->
-<script src="{{URL::asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/chart.js/Chart.bundle.min.js')}}"></script>
 <!-- Moment js -->
-<script src="{{URL::asset('assets/plugins/raphael/raphael.min.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/raphael/raphael.min.js')}}"></script>
 <!--Internal  Flot js-->
-<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.js')}}"></script>
-<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.pie.js')}}"></script>
-<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.resize.js')}}"></script>
-<script src="{{URL::asset('assets/plugins/jquery.flot/jquery.flot.categories.js')}}"></script>
-<script src="{{URL::asset('assets/js/dashboard.sampledata.js')}}"></script>
-<script src="{{URL::asset('assets/js/chart.flot.sampledata.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.pie.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.resize.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/jquery.flot/jquery.flot.categories.js')}}"></script>
+<script src="{{URL::asset('dashboard/js/dashboard.sampledata.js')}}"></script>
+<script src="{{URL::asset('dashboard/js/chart.flot.sampledata.js')}}"></script>
 <!--Internal Apexchart js-->
-<script src="{{URL::asset('assets/js/apexcharts.js')}}"></script>
+<script src="{{URL::asset('dashboard/js/apexcharts.js')}}"></script>
 <!-- Internal Map -->
-<script src="{{URL::asset('assets/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
-<script src="{{URL::asset('assets/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
-<script src="{{URL::asset('assets/js/modal-popup.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
+<script src="{{URL::asset('dashboard/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
+<script src="{{URL::asset('dashboard/js/modal-popup.js')}}"></script>
 <!--Internal  index js -->
-<script src="{{URL::asset('assets/js/index.js')}}"></script>
-<script src="{{URL::asset('assets/js/jquery.vmap.sampledata.js')}}"></script>	
+<script src="{{URL::asset('dashboard/js/index.js')}}"></script>
+<script src="{{URL::asset('dashboard/js/jquery.vmap.sampledata.js')}}"></script>	
 @endsection

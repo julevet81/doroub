@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('is_destructed')->default(false);
             $table->text('destruction_report')->nullable();
             $table->text('destruction_reason')->nullable();
+            $table->date('destruction_date')->nullable();
             $table->string('barcode')->unique();
             $table->boolean('is_new')->default(true);
             $table->timestamps();
