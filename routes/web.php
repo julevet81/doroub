@@ -33,10 +33,6 @@ Route::get('/', function () {
     return view('landing.index');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard.users.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard.index');
-
 Route::get('/dashboar', function () {
     return view('dashboard.users.dashboard');
     })->middleware('auth', 'verified')->name('dashboard.index');
@@ -120,15 +116,21 @@ Route::middleware('auth')->group(function () {
         ->name('devices.destructed');
     Route::put('/devices/{device}/destruct', [DeviceController::class, 'destruct'])
         ->name('devices.destruct');
-    Route::get('/devices/{device}/destruction/edit', [DeviceController::class, 'editDestruction'])
-        ->name('devices.destruction.edit');
 
-    Route::post('/devices/{device}/destruction/update', [DeviceController::class, 'updateDestruction'])
-        ->name('devices.destruction.update');
+    Route::get('/devices/{device}/destruction/edit',[DeviceController::class, 'editDestruction']
+        )->name('devices.destruction.edit');
 
-    Route::get('/devices/{device}/destruction/print', [DeviceController::class, 'printDestruction'])
-        ->name('devices.destruction.print');
+    Route::post(
+    '/devices/{device}/destruction/preview',
+    [DeviceController::class, 'previewPdf']
+        )->name('devices.destruction.preview');
 
+    Route::post('/devices/{device}/destruction/print',
+    [DeviceController::class, 'printDestruction']
+        )->name('devices.destruction.print');
+    Route::post('/devices/{device}/destruction/pdf',
+    [DeviceController::class, 'destructionPdf']
+        )->name('devices.destruction.pdf');
 
     Route::resource('devices', DeviceController::class);
     

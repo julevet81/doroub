@@ -1,48 +1,45 @@
 @extends('dashboard.layouts.master')
 
 @section('content')
-    <div class="container">
+<div class="container">
 
-        <h3 class="mb-3">تعديل تقرير إتلاف الجهاز</h3>
+    <h3 class="mb-3">تعديل تقرير إتلاف الجهاز</h3>
 
-        <form action="{{ route('devices.destruction.update', $device->id) }}" method="POST">
-            @csrf
+    <form method="POST"
+        action="{{ route('devices.destruction.preview', $device->id) }}"
+        target="previewFrame">
+        @csrf
 
-            <div class="mb-3">
-                <label>اسم الجهاز</label>
-                <input type="text" class="form-control" value="{{ $device->name }}" disabled>
-            </div>
+        <label>اسم الجهاز</label>
+        <input class="form-control mb-2" value="{{ $device->name }}" disabled>
 
-            <div class="mb-3">
-                <label>رقم الجرد</label>
-                <input type="text" class="form-control" value="{{ $device->serial_number }}" disabled>
-            </div>
+        <label>رقم الجرد</label>
+        <input class="form-control mb-2" value="{{ $device->barcode }}" disabled>
 
-            <div class="mb-3">
-                <label>العدد</label>
-                <input type="number" name="usage_count" value="{{ $device->barcode }}" class="form-control">
-            </div>
+        <label>العدد</label>
+        <input type="number" name="usage_count" class="form-control mb-2" required>
 
-            <div class="mb-3">
-                <label>تاريخ الإتلاف</label>
-                <input type="date" name="destruction_date" value="{{ now()->toDateString() }}" class="form-control">
-            </div>
+        <label>سبب الإتلاف</label>
+        <textarea name="destruction_reason" class="form-control mb-2" required></textarea>
 
-            <div class="mb-3">
-                <label>سبب الإتلاف</label>
-                <textarea name="destruction_reason" class="form-control"
-                    rows="3">{{ $device->destruction_reason }}</textarea>
-            </div>
+        <label>تاريخ الإتلاف</label>
+        <input type="date" name="destruction_date"
+            class="form-control mb-3" required>
 
-            <div class="mb-3">
-                <label>تقرير الإتلاف (اختياري)</label>
-                <textarea name="destruction_report" class="form-control"
-                    rows="3">{{ $device->destruction_report }}</textarea>
-            </div>
+        <button class="btn btn-success">معاينة قبل الطباعة</button>
+    </form>
+    <hr>
 
-            <button type="submit" class="btn btn-success">معاينة قبل الطباعة</button>
+    <iframe name="previewFrame"
+        width="100%"
+        height="800"
+        style="border:1px solid #ccc;">
+    </iframe>
+    <br>
+    <button onclick="document.querySelector('iframe').contentWindow.print()"
+        class="btn btn-danger mt-2">
+        طباعة
+    </button>
 
-        </form>
-
-    </div>
+</div>
 @endsection

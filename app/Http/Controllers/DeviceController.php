@@ -145,31 +145,15 @@ class DeviceController extends Controller
         return view('devices.destruction.edit', compact('device'));
     }
 
-    public function updateDestruction(Request $request, Device $device)
+    public function previewPdf(Request $request, Device $device)
     {
-        $request->validate([
-            'destruction_reason' => 'required',
+        $data = $request->validate([
+            'usage_count' => 'required|integer',
+            'destruction_reason' => 'required|string',
             'destruction_date' => 'required|date',
         ]);
 
-        $device->update([
-            'destruction_reason' => $request->destruction_reason,
-            'destruction_report' => $request->destruction_report,
-            'usage_count' => $request->usage_count,
-            'is_destructed' => true,
-            'status' => false,
-            'is_new' => false,
-            'destruction_date' => $request->destruction_date,
-        ]);
-
-        return redirect()->route('devices.destruction.print', $device->id);
-    }
-
-
-    public function printDestruction(Device $device)
-    {
-        $pdf = new FPDI('P', 'mm', 'A4');
-
+        $pdf = new Fpdi('P', 'mm', 'A4');
         $template = public_path('assets/certificates/101.pdf');
 
         $pdf->AddPage();
@@ -177,44 +161,133 @@ class DeviceController extends Controller
         $tpl = $pdf->importPage(1);
         $pdf->useTemplate($tpl);
 
-        $pdf->SetFont('Helvetica', '', 12);
+        $pdf->SetFont('dejavusans', '', 12);
         $pdf->SetTextColor(0, 0, 0);
 
-        // التاريخ 
-        $date = $device->destruction_date ?? now();
-        $pdf->setXY(40, 42);
-        $pdf->Write(0, Carbon::parse($device->destruction_date)->format('d-m-Y'));
-
-
-        // اسم الجهاز – التعيين
+        // التعيين
         $pdf->SetXY(55, 105);
         $pdf->Write(0, $device->name);
 
         // رقم الجرد
         $pdf->SetXY(125, 105);
-        $pdf->Write(0, $device->serial_number);
+        $pdf->Write(0, $device->barcode);
 
         // العدد
         $pdf->SetXY(165, 105);
-        $pdf->Write(0, $device->usage_count);
+        $pdf->Write(0, $data['usage_count']);
 
         // سبب الإتلاف
         $pdf->SetXY(55, 120);
-        $pdf->MultiCell(120, 5, $device->destruction_reason);
+        $pdf->MultiCell(120, 6, $data['destruction_reason']);
 
-        // التاريخ (يوم/شهر/سنة)
-        $date = $device->destruction_date ?? now();
-        $date = Carbon::parse($date);
-        $pdf->SetXY(158, 180);
+        // التاريخ
+        $date = Carbon::parse($data['destruction_date']);
+        $pdf->SetXY(140, 160);
+        $pdf->Write(0, $date->format('d'));
+        $pdf->SetXY(160, 160);
+        $pdf->Write(0, $date->format('m'));
+        $pdf->SetXY(180, 160);
+        $pdf->Write(0, $date->format('Y'));
+
+        // نُرجع PDF للعرض داخل الصفحة
+        return response($pdf->Output('S'), 200)
+            ->header('Content-Type', 'application/pdf');
+    }
+
+
+    // 3️⃣ الطباعة على PDF
+    public function printDestruction(Request $request, Device $device)
+    {
+        $usageCount = $request->usage_count;
+        $reason = $request->destruction_reason;
+        $date = Carbon::parse($request->destruction_date);
+
+        $pdf = new Fpdi('P', 'mm', 'A4');
+        $template = public_path('assets/certificates/101.pdf');
+
+        $pdf->AddPage();
+        $pdf->setSourceFile($template);
+        $tpl = $pdf->importPage(1);
+        $pdf->useTemplate($tpl);
+
+        $pdf->SetFont('dejavusans', '', 12);
+        $pdf->SetTextColor(0, 0, 0);
+
+        // التعيين (اسم الجهاز)
+        $pdf->SetXY(55, 105);
+        $pdf->Write(0, $device->name);
+
+        // رقم الجرد
+        $pdf->SetXY(125, 105);
+        $pdf->Write(0, $device->barcode);
+
+        // العدد
+        $pdf->SetXY(165, 105);
+        $pdf->Write(0, $usageCount);
+
+        // سبب الإتلاف
+        $pdf->SetXY(55, 120);
+        $pdf->MultiCell(120, 6, $reason);
+
+        // التاريخ
+        $pdf->SetXY(140, 160);
         $pdf->Write(0, $date->format('d'));
 
-        $pdf->SetXY(98, 180);
+        $pdf->SetXY(160, 160);
         $pdf->Write(0, $date->format('m'));
 
-        $pdf->SetXY(38, 180);
+        $pdf->SetXY(180, 160);
         $pdf->Write(0, $date->format('Y'));
 
         return response($pdf->Output('S'), 200)
             ->header('Content-Type', 'application/pdf');
     }
+
+    public function destructionPdf(Request $request, Device $device)
+{
+    $data = $request->validate([
+        'usage_count' => 'required|integer',
+        'destruction_reason' => 'required|string',
+        'destruction_date' => 'required|date',
+    ]);
+
+    $pdf = new Fpdi('P', 'mm', 'A4');
+    $template = public_path('assets/certificates/101.pdf');
+
+    $pdf->AddPage();
+    $pdf->setSourceFile($template);
+    $tpl = $pdf->importPage(1);
+    $pdf->useTemplate($tpl);
+
+    $pdf->SetFont('dejavusans', '', 12);
+
+    $pdf->SetXY(55, 105);
+    $pdf->Write(0, $device->name);
+
+    $pdf->SetXY(125, 105);
+    $pdf->Write(0, $device->barcode);
+
+    $pdf->SetXY(165, 105);
+    $pdf->Write(0, $data['usage_count']);
+
+    $pdf->SetXY(55, 120);
+    $pdf->MultiCell(120, 6, $data['destruction_reason']);
+
+    $date = Carbon::parse($data['destruction_date']);
+
+    $pdf->SetXY(140, 160);
+    $pdf->Write(0, $date->format('d'));
+
+    $pdf->SetXY(160, 160);
+    $pdf->Write(0, $date->format('m'));
+
+    $pdf->SetXY(180, 160);
+    $pdf->Write(0, $date->format('Y'));
+
+    $pdf->Output(storage_path("app/destruction_{$device->id}.pdf"), 'F');
+
+
+    return response($pdf->Output('S'), 200)
+        ->header('Content-Type', 'application/pdf');
+}
 }
