@@ -48,7 +48,7 @@
 						<div class="pl-3 pr-3 pb-2 pt-0">
 							<div class="">
 								<br>
-								<h6 class="mb-3 tx-12 text-white" style="font-size: x-large">إجمالي المستفيدين</h6>
+								<h6 class="mb-3 tx-12 text-white" style="font-size: x-large"> المتطوعين النشطين</h6>
 							</div>
 							<div class="pb-0 mt-0">
 								<div class="d-flex">
